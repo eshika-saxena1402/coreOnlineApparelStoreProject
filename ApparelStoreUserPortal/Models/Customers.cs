@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ApparelStoreUserPortal.Models
 {
@@ -12,25 +11,25 @@ namespace ApparelStoreUserPortal.Models
         }
 
         public int CustomerId { get; set; }
-        [Required]
         public string CustomerFirstName { get; set; }
-        [Required]
         public string CustomerLastName { get; set; }
-        [Required]
         public string UserName { get; set; }
-        [Required]
         public string Email { get; set; }
-        [Required]
         public string Address { get; set; }
         public string Address2 { get; set; }
-        [Required]
         public string Country { get; set; }
-        [Required]
         public string State { get; set; }
         public int ZipCode { get; set; }
-        [Required]
         public bool SameAddress { get; set; }
+        public long AlternatePhoneNumber { get; set; }
+        public string Country2 { get; set; }
+        public string Gender { get; set; }
+        public string Password { get; set; }
+        public long PhoneNumber { get; set; }
+        public string State2 { get; set; }
+        public int ZipCode2 { get; set; }
 
+        public Carts Carts { get; set; }
         public ICollection<Orders> Orders { get; set; }
     }
 }

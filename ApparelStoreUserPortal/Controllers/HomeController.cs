@@ -40,7 +40,15 @@ namespace ApparelStoreUserPortal.Controllers
         public IActionResult Contact()
         {
             return View();
-        }    
+        }
+        public IActionResult logout()
+        {
+            HttpContext.Session.Remove("logout");
+            HttpContext.Session.Remove("Cartitem");
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+            return RedirectToAction("index");
+           
+        }
     }
 }
                     

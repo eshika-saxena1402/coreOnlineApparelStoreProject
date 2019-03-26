@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "coreOnlineApparelStoreAdminPortal", "coreOnlineApparelStoreAdminPortal\coreOnlineApparelStoreAdminPortal.csproj", "{E2EB310B-2D91-4CA1-94C3-98BF1DB06D47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApparelStoreUserPortal", "ApparelStoreUserPortal\ApparelStoreUserPortal.csproj", "{1A2E55EB-BEA2-4A31-8FB7-2999833C62B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApparelStoreUserPortal", "ApparelStoreUserPortal\ApparelStoreUserPortal.csproj", "{1A2E55EB-BEA2-4A31-8FB7-2999833C62B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPortalTesting", "AdminPortalTesting\AdminPortalTesting.csproj", "{553D78E6-163F-418C-B5BD-880D2840C853}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1A2E55EB-BEA2-4A31-8FB7-2999833C62B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A2E55EB-BEA2-4A31-8FB7-2999833C62B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A2E55EB-BEA2-4A31-8FB7-2999833C62B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{553D78E6-163F-418C-B5BD-880D2840C853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{553D78E6-163F-418C-B5BD-880D2840C853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{553D78E6-163F-418C-B5BD-880D2840C853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{553D78E6-163F-418C-B5BD-880D2840C853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

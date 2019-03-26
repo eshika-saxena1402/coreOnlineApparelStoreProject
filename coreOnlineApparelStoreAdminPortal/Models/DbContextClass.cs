@@ -15,6 +15,9 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public DbSet<Customer> Customers { get; set; }
        public DbSet<OrderProduct> orderProducts { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<FeedBack> FeedBacks { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbContextClass(DbContextOptions<DbContextClass> options) : base(options)
         {
         }
@@ -29,7 +32,15 @@ namespace coreOnlineApparelStoreAdminPortal.Models
             {
                 build.HasKey(t => new { t.OrderId, t.ProductId });
             });
-            
+            modelBuilder.Entity<Cart>(build =>
+            {
+                build.HasKey(t => new { t.CustomerId, t.ProductId });
+            });
+            modelBuilder.Entity<FeedBack>(build =>
+            {
+                build.HasKey(t => new { t.ProductId, t.OrderId, });
+            });
+
         }
     }
 }

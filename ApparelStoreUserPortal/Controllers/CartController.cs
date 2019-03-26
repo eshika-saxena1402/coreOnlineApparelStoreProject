@@ -106,6 +106,7 @@ namespace ApparelStoreUserPortal.Controllers
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
             ViewBag.total = cart.Sum(item => item.Products.ProductPrice * item.ItemQuantity);
+            
             Customers cus = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
             ViewBag.Customers = cus;
             TempData["total"] = ViewBag.total;
@@ -119,13 +120,20 @@ namespace ApparelStoreUserPortal.Controllers
             customer.CustomerFirstName = customers.CustomerFirstName;
             customer.CustomerLastName = customers.CustomerLastName;
             customer.UserName = customers.UserName;
+            customer.Gender = customers.Gender;
             customer.Email = customers.Email;
+            customer.PhoneNumber = customers.PhoneNumber;
             customer.Country = customers.Country;
             customer.State = customers.State;
             customer.ZipCode = customers.ZipCode;
             customer.Address = customers.Address;
             customer.Address2 = customers.Address2;
             customer.SameAddress = customers.SameAddress;
+            customer.AlternatePhoneNumber = customers.AlternatePhoneNumber;
+            customer.Country2 = customers.Country2;
+            customer.State2 = customers.State2;
+            customer.Password = customers.Password;
+            customer.ZipCode2 = customers.ZipCode2;
 
             context.SaveChanges();
             var amount = TempData["total"];
@@ -162,7 +170,7 @@ namespace ApparelStoreUserPortal.Controllers
             int CustId = int.Parse(TempData["cust"].ToString());
             Customers customers = context.Customers.Where(x => x.CustomerId == CustId).SingleOrDefault();
             ViewBag.Customers = customers;
-
+          
             //int custId = int.Parse(TempData["cust"].ToString());
             //Orders ord = context.Orders.Where(x => x.CustomerId == custId).SingleOrDefault();
             //ViewBag.order = ord;
@@ -175,7 +183,9 @@ namespace ApparelStoreUserPortal.Controllers
                 pro.ProductQuantity = pro.ProductQuantity - item.ItemQuantity;
                 context.SaveChanges();
             }
-            ViewBag.total = cart.Sum(item => item.Products.ProductPrice * item.ItemQuantity);
+            float total= cart.Sum(item => item.Products.ProductPrice * item.ItemQuantity);
+            ViewBag.total = total;
+            ViewBag.discount = (20 * ViewBag.total) / 100;
             cart = null;
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             HttpContext.Session.Remove("Cartitem");
@@ -222,12 +232,14 @@ namespace ApparelStoreUserPortal.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            if (username != null && password != null && password.Equals("1"))
+           Customers c= context.Customers.Where(x => x.Password == password).SingleOrDefault();
+            if (username != null && password != null && password.Equals(c.Password) && c!=null)
             {
                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
                 if (cus != null)
                 {
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus);
+                    HttpContext.Session.SetString("logout", "Logout");
                     return RedirectToAction("checkout");
                 }
                 else
@@ -256,11 +268,13 @@ namespace ApparelStoreUserPortal.Controllers
                     Customers c = new Customers();
                     c.Email = username;
                     c.CustomerFirstName = firstname;
+                    c.Password = password;
                     c.CustomerLastName = lastname;
                     context.Customers.Add(c);
                     context.SaveChanges();
                     Customers cust = context.Customers.Where(x => x.Email == username).SingleOrDefault();
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cust);
+                    HttpContext.Session.SetString("logout","Logout");
                     return RedirectToAction("checkout");
                 }
             }
