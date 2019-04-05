@@ -9,7 +9,8 @@
         User Portal
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-     <link rel="stylesheet" href="~/css/UserHomePageTemplate.css" />
+    <link rel="stylesheet" href="~/css/UserHomePageTemplate.css" />
+    <link rel="stylesheet" href="~/css/Login_Register.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
@@ -23,16 +24,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" asp-controller="home" asp-action="index">Home </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="brand" asp-action="Display">Brand</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Product</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="category" asp-action="Display">Category</a>
-                </li>
-                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -42,32 +33,152 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <a asp-action="logout" asp-controller="Home" onclick="logout()" >@Context.Session.GetString("logout")</a>
+            <form class="form-inline my-2 my-lg-0" asp-action="Search" asp-controller="Cart">
+                @*<a asp-action="userProfile" asp-controller="Home" asp-route-id="@Context.Session.GetString("logout")">@Context.Session.GetString("logout")</a>*@
                 &nbsp;
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 &nbsp;
-   
-                    <button asp-controller="cart" asp-action="Index" class="btn btn-secondary my-2 my-sm-0">
-                        <img src="~/images/images (1).png" width="40" height="35" /> View Cart <sup>@Context.Session.GetString("Cartitem")</sup>
-                    </button>
+                <button asp-controller="cart" asp-action="Index" class="btn btn-secondary my-2 my-sm-0">
+                    <img src="~/images/images (1).png" width="40" height="29" /> View Cart <sup>@Context.Session.GetString("Cartitem")</sup>
+                </button>
+                &nbsp;
+                @if (Context.Session.GetString("logout") == null)
+                {
+                    <a data-toggle="modal" data-target="#modalLRForm" class="btn btn-secondary">LogIn</a>
+                }
+                else
+                {
+                    <div class="nav-item dropdown">
+                        <button class="nav-link dropdown-toggle btn btn-secondary my-2 my-sm-0" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Context.Session.GetString("name")</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown02">
+                            <a class="dropdown-item" asp-controller="Home" asp-action="EditPassword">Change Password</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Feedback">FeedBack</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="EditProfile">Edit Profile</a>
+                            <a class="dropdown-item" asp-action="userProfile" asp-controller="Home" asp-route-id="@Context.Session.GetString("logout")">View Profile</a>
+                           <a class="dropdown-item" asp-controller="Home" asp-action="logout">LogOut</a>
+                        </div>
+                    </div>
+                }
             </form>
         </div>
     </nav>
     <main role="main" class="container">
 
         <div class="starter-template">
+            <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog cascading-modal" role="document">
+                    <!--Content-->
+                    <div class="modal-content">
+
+                        <!--Modal cascading tabs-->
+                        <div class="modal-c-tabs">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab">
+                                        <i class="fas fa-user mr-1"></i>
+                                        Login
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#panel8" role="tab">
+                                        <i class="fas fa-user-plus mr-1"></i>
+                                        Register
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panels -->
+                            <div class="tab-content">
+                                <!--Panel 7-->
+                                <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+
+                                    <!--Body-->
+                                    <form class="form-signin  modal-body" method="post" asp-controller="Cart" asp-action="login">
+                                        <div class="form-label-group">
+                                            <input type="text" name="username" class="form-control" placeholder="username" required autofocus>
+                                            <label for="username" class="sr-only">UserName</label>
+                                        </div>
+                                        <br />
+
+                                        <div class="form-label-group">
+                                            <input type="password" name="password" class="form-control" placeholder="password" required>
+                                            <label for="password" class="sr-only">Password</label>
+                                        </div>
+                                        <br />
+
+                                        <div class="custom-control custom-checkbox mb-3">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                        </div>
+                                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                                    </form>
+                                    <!--Footer-->
+                                    <div class="modal-footer">
+                                        <div class="options text-center text-md-right mt-1">
+                                            <p>Not a member? <a href="#" class="blue-text">Sign Up</a></p>
+                                            <p>Forgot <a href="#" class="blue-text">Password?</a></p>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                                <!--/.Panel 7-->
+                                <!--Panel 8-->
+                                <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+                                    <!--Body-->
+                                    <div class="modal-body">
+                                        <form class="form-signin" method="post" asp-controller="Cart" asp-action="register">
+                                            <div class="form-label-group">
+                                                <input type="text" name="username" class="form-control" placeholder="username" required autofocus>
+                                                <label for="username" class="sr-only">UserName</label>
+                                            </div>
+                                            <br />
+                                            <div class="form-label-group">
+                                                <input type="password" name="password" class="form-control" placeholder="password" required>
+                                                <label for="password" class="sr-only">Password</label>
+                                            </div>
+                                            <br />
+                                            <div class="form-label-group">
+                                                <input type="text" name="firstname" class="form-control" placeholder="firstname" required>
+                                                <label for="firstname" class="sr-only">firstname</label>
+                                            </div>
+                                            <br />
+                                            <div class="form-label-group">
+                                                <input type="text" name="lastname" class="form-control" placeholder="lastname" required>
+                                                <label for="lastname" class="sr-only">lastname</label>
+                                            </div>
+                                            <br />
+                                            <div class="custom-control custom-checkbox mb-3">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1">Remember password</label>
+                                            </div>
+                                            <br />
+                                            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                                        </form>
+
+                                    </div>
+                                    <!--Footer-->
+                                    <div class="modal-footer">
+                                        <div class="options text-right">
+                                            <p class="pt-1">Already have an account? <a href="#" class="blue-text">Log In</a></p>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-info waves-effect ml-auto" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                <!--/.Panel 8-->
+                            </div>
+
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
             @RenderBody()
         </div>
-    <script type="text/javascript">
-        function logout() {
-            HttpContext.Session.Remove("logout");
-            cart = null;
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-        }
-        
-    </script>
     </main><!-- /.container -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -27,7 +27,6 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public int BrandId { get; set; }
         public Brand Brand{ get; set; }  
         public List<OrderProduct>OrderProducts { get; set; }
-        public List<FeedBack> FeedBacks{ get; set; }
         public List<Cart> Carts { get; set; }
 
     }

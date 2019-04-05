@@ -10,12 +10,8 @@ namespace coreOnlineApparelStoreAdminPortal.Models
     public class FeedBack
     {
         public int FeedBackId { get; set; }
-        [Column(Order = 0), Key, ForeignKey("Product")]
-        public int ProductId { get; set; }
-        [Column(Order = 0), Key, ForeignKey("Order")]
-        public int OrderId { get; set; }
-        public Product Product { get; set; }
-        public Order Order { get; set; }
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public string Message { get; set; }
       
     }

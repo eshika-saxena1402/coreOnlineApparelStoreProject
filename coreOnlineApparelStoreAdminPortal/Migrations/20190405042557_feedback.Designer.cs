@@ -10,8 +10,8 @@ using coreOnlineApparelStoreAdminPortal.Models;
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    [Migration("20190323071905_Initial")]
-    partial class Initial
+    [Migration("20190405042557_feedback")]
+    partial class feedback
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,39 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Admin", b =>
+                {
+                    b.Property<int>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.Property<long>("AlternatePhoneNumber");
+
+                    b.Property<string>("Country");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Password");
+
+                    b.Property<long>("PhoneNumber");
+
+                    b.Property<string>("State");
+
+                    b.Property<int>("ZipCode");
+
+                    b.HasKey("AdminId");
+
+                    b.ToTable("Admins");
+                });
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Brand", b =>
                 {
@@ -122,17 +155,17 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.FeedBack", b =>
                 {
-                    b.Property<int>("ProductId");
+                    b.Property<int>("FeedBackId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("FeedBackId");
+                    b.Property<int>("CustomerId");
 
                     b.Property<string>("Message");
 
-                    b.HasKey("ProductId", "OrderId");
+                    b.HasKey("FeedBackId");
 
-                    b.HasAlternateKey("OrderId", "ProductId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("FeedBacks");
                 });
@@ -242,14 +275,9 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.FeedBack", b =>
                 {
-                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Order", "Order")
+                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Customer", "Customer")
                         .WithMany("FeedBacks")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Product", "Product")
-                        .WithMany("FeedBacks")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

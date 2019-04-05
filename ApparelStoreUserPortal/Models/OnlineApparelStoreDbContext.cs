@@ -24,7 +24,6 @@ namespace ApparelStoreUserPortal.Models
         public virtual DbSet<OrderProducts> OrderProducts { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<Vendors> Vendors { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -32,7 +31,7 @@ namespace ApparelStoreUserPortal.Models
             if (!optionsBuilder.IsConfigured)
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=TRD-502; Database=OnlineApparelStoreDb ;Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Server=TRD-502; Database=OnlineApparelStoreDb; Integrated Security=True;");
             }
         }
 
@@ -78,27 +77,17 @@ namespace ApparelStoreUserPortal.Models
             modelBuilder.Entity<Customers>(entity =>
             {
                 entity.HasKey(e => e.CustomerId);
-
-                entity.Property(e => e.AlternatePhoneNumber).HasDefaultValueSql("(CONVERT([bigint],(0)))");
-
-                entity.Property(e => e.PhoneNumber).HasDefaultValueSql("(CONVERT([bigint],(0)))");
             });
 
             modelBuilder.Entity<FeedBacks>(entity =>
             {
-                entity.HasKey(e => new { e.ProductId, e.OrderId });
+                entity.HasKey(e => e.FeedBackId);
 
-                entity.HasIndex(e => new { e.OrderId, e.ProductId })
-                    .HasName("AK_FeedBacks_OrderId_ProductId")
-                    .IsUnique();
+                entity.HasIndex(e => e.CustomerId);
 
-                entity.HasOne(d => d.Order)
+                entity.HasOne(d => d.Customer)
                     .WithMany(p => p.FeedBacks)
-                    .HasForeignKey(d => d.OrderId);
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.FeedBacks)
-                    .HasForeignKey(d => d.ProductId);
+                    .HasForeignKey(d => d.CustomerId);
             });
 
             modelBuilder.Entity<OrderProducts>(entity =>
@@ -154,17 +143,6 @@ namespace ApparelStoreUserPortal.Models
                 entity.HasOne(d => d.Vendor)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.VendorId);
-            });
-
-            modelBuilder.Entity<Users>(entity =>
-            {
-                entity.ToTable("users");
-
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Uname)
-                    .HasColumnName("uname")
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Vendors>(entity =>

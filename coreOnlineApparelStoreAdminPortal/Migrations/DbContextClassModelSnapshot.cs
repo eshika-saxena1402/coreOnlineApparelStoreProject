@@ -153,17 +153,17 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.FeedBack", b =>
                 {
-                    b.Property<int>("ProductId");
+                    b.Property<int>("FeedBackId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("FeedBackId");
+                    b.Property<int>("CustomerId");
 
                     b.Property<string>("Message");
 
-                    b.HasKey("ProductId", "OrderId");
+                    b.HasKey("FeedBackId");
 
-                    b.HasAlternateKey("OrderId", "ProductId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("FeedBacks");
                 });
@@ -273,14 +273,9 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.FeedBack", b =>
                 {
-                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Order", "Order")
+                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Customer", "Customer")
                         .WithMany("FeedBacks")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Product", "Product")
-                        .WithMany("FeedBacks")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
