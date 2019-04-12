@@ -14,8 +14,7 @@ namespace ApparelStoreUserPortal.Controllers
     {
         OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
         public IActionResult Index()
-        {
-            HttpContext.Session.SetString("homecart", "Login");
+        {          
             var products = context.Products.ToList();
             int j = 0;
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
@@ -32,7 +31,7 @@ namespace ApparelStoreUserPortal.Controllers
                     {
                         j++;
                     }
-                    HttpContext.Session.SetString("Cartitem", i.ToString());
+                    HttpContext.Session.SetString("cartitem", i.ToString());
                 }
               
             }         
@@ -44,35 +43,36 @@ namespace ApparelStoreUserPortal.Controllers
         }
         public IActionResult logout()
         {
-            HttpContext.Session.Remove("logout");
-            HttpContext.Session.Remove("Cartitem");
+            HttpContext.Session.Remove("cartitem");
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", null);
-            HttpContext.Session.SetString("log", "LogOut");
+            HttpContext.Session.Remove("name");        
             return RedirectToAction("index");
            
         }
-        public IActionResult userProfile(string id)
+        public IActionResult userProfile()
         {
-            Customers customers = context.Customers.Where(x => x.Email == id).SingleOrDefault();
+            Customers customers = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+            ViewBag.Customers = customers;
             int a = customers.CustomerId;
             ViewBag.id = a;
             return View(customers);
         }
+        [HttpGet]
         public IActionResult EditProfile()
         {
             Customers cust = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
             return View(cust);
         }
         [HttpPost]
-        public IActionResult EditProfile(string id,Customers customers)
+        public IActionResult EditProfile(int id,Customers customers)
         {
-            Customers customer = context.Customers.Where(x => x.Email == customers.Email).SingleOrDefault();
+            Customers customer1 = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+            Customers customer = context.Customers.Where(x => x.Email == customer1.Email).SingleOrDefault();
             customer.CustomerFirstName = customers.CustomerFirstName;
             customer.CustomerLastName = customers.CustomerLastName;
             customer.UserName = customers.UserName;
             customer.Gender = customers.Gender;
-            customer.Email = customers.Email;
             customer.PhoneNumber = customers.PhoneNumber;
             customer.Country = customers.Country;
             customer.State = customers.State;
@@ -84,7 +84,7 @@ namespace ApparelStoreUserPortal.Controllers
             customer.State2 = customers.State2;
             customer.ZipCode2 = customers.ZipCode2;
             context.SaveChanges();
-            return RedirectToAction("userProfile","home",new { @id=customers.Email});
+            return RedirectToAction("userProfile","home",new { @id=customer.Email});
         }
         public IActionResult CustomerHistory()
         {
@@ -121,7 +121,7 @@ namespace ApparelStoreUserPortal.Controllers
                 Customers cus = context.Customers.Where(x => x.Email == c.Email).SingleOrDefault();
                 cus.Password = newpassword;
                 context.SaveChanges();
-
+                return RedirectToAction("logout", "home");
             }
 
             return RedirectToAction("index");

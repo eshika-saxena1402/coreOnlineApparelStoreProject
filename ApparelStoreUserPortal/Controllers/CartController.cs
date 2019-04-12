@@ -15,8 +15,7 @@ namespace ApparelStoreUserPortal.Controllers
         OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
         [Route("index")] 
        public IActionResult Index()
-        {
-            HttpContext.Session.SetString("log","LogIn");
+        {         
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             int i = 0;
             if (cart != null)
@@ -38,7 +37,7 @@ namespace ApparelStoreUserPortal.Controllers
             }
             return View("Goback");
         }
-        
+       
         [Route("buy/{id}")]
         public IActionResult Buy(int id)
         {
@@ -62,7 +61,8 @@ namespace ApparelStoreUserPortal.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             return RedirectToAction("Index","Home");
-        }
+        }    
+
         [Route("remove/{id}")]
         public IActionResult Remove(int id)
         {
@@ -70,7 +70,7 @@ namespace ApparelStoreUserPortal.Controllers
             int index = isExist(id);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            int j = int.Parse(HttpContext.Session.GetString("Cartitem"));
+            int j = int.Parse(HttpContext.Session.GetString("cartitem"));
             int i = 0;
             foreach(var item in cart)
             {
@@ -80,11 +80,11 @@ namespace ApparelStoreUserPortal.Controllers
                 {
                               
                     j--; 
-                    HttpContext.Session.SetString("Cartitem", j.ToString());
+                    HttpContext.Session.SetString("cartitem", j.ToString());
                 }
                 else
                  {
-                    HttpContext.Session.Remove("Cartitem");
+                    HttpContext.Session.Remove("cartitem");
                     return View("Goback");
                  }
 
@@ -191,7 +191,7 @@ namespace ApparelStoreUserPortal.Controllers
             ViewBag.discount = (20 * ViewBag.total) / 100;
             cart = null;
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            HttpContext.Session.Remove("Cartitem");
+            HttpContext.Session.Remove("cartitem");
             return View();
         }
 
@@ -235,62 +235,159 @@ namespace ApparelStoreUserPortal.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-           Customers c= context.Customers.Where(x => x.Email == username).SingleOrDefault();
-            if (username != null && password != null && password.Equals(c.Password) && c!=null)
+
+            if (username != null && password != null)
             {
-               var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
-                if (cus != null)
+
+                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                if (cus != null && password.Equals(cus.Password))
                 {
+
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus);
-                    HttpContext.Session.SetString("cusid",cus.CustomerId.ToString());
-                    HttpContext.Session.SetString("logout", username);
-                    HttpContext.Session.SetString("name",cus.CustomerFirstName+" "+cus.CustomerLastName);
-                    SessionHelper.SetObjectAsJson(HttpContext.Session,"cart",null);
-                    HttpContext.Session.SetString("log", "Logout");
-                    if (HttpContext.Session.GetString("homecart") == "Login")
-                        return RedirectToAction("index","home");
-                    return RedirectToAction("checkout");
+                    HttpContext.Session.SetString("cusid", cus.CustomerId.ToString());
+                    HttpContext.Session.SetString("name", cus.CustomerFirstName + " " + cus.CustomerLastName);
+
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+
+                    HttpContext.Session.Remove("cartitem");
+
+                    return RedirectToAction("index", "home");
+
+
                 }
                 else
                 {
-                    ViewBag.Error = "Kindly Register Yourself First";
+                    ViewBag.Error = "Register Email First";
+
                 }
+
+
 
             }
             return RedirectToAction("Index");
+
+        }
+        [Route("Login1")]
+        [HttpPost]
+        public IActionResult Login1(string username, string password)
+        {
+
+            if (username != null && password != null)
+            {
+
+                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                if (cus != null && password.Equals(cus.Password))
+                {
+
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus);
+
+
+                    HttpContext.Session.SetString("cusid", cus.CustomerId.ToString());
+                    HttpContext.Session.SetString("name", cus.CustomerFirstName + " " + cus.CustomerLastName);
+                    
+                    return RedirectToAction("Checkout");
+
+
+                }
+                else
+                {
+                    ViewBag.Error = "Register Email First";
+
+                }
+
+
+
+            }
+            return RedirectToAction("Index");
+
         }
 
-        [Route("Register")]
+        [Route("register")]
         [HttpPost]
         public IActionResult Regiter(string username, string password, string firstname, string lastname)
         {
+
             if (username != null && password != null)
             {
+
                 var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
                 if (cus != null)
                 {
+
                     ViewBag.Error = "Alredy register";
+
+
                 }
                 else
                 {
                     Customers c = new Customers();
                     c.Email = username;
-                    c.CustomerFirstName = firstname;
                     c.Password = password;
+
+                    c.CustomerFirstName = firstname;
                     c.CustomerLastName = lastname;
                     context.Customers.Add(c);
                     context.SaveChanges();
-                    Customers cust = context.Customers.Where(x => x.Email == username).SingleOrDefault();
-                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cust);
-                    HttpContext.Session.SetString("logout",username);
-                    HttpContext.Session.SetString("log", "Logout");
-                    HttpContext.Session.SetString("cusid", cust.CustomerId.ToString());
-                    if (HttpContext.Session.GetString("homecart") == "Login")
-                        return RedirectToAction("index", "home");
-                    return RedirectToAction("checkout");
+                    Customers cus1 = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus1);
+
+                    HttpContext.Session.Remove("cartitem");
+                    HttpContext.Session.SetString("name", c.CustomerFirstName + " " + c.CustomerLastName);
+                    HttpContext.Session.SetString("cusid", cus1.CustomerId.ToString());
+
+                   
+                    return RedirectToAction("index", "home");
+
+
                 }
+
             }
             return RedirectToAction("Index");
+
+
+
+        }
+        [Route("register1")]
+        [HttpPost]
+        public IActionResult Regiter1(string username, string password, string firstname, string lastname)
+        {
+
+            if (username != null && password != null)
+            {
+
+                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                if (cus != null)
+                {
+
+                    ViewBag.Error = "Alredy register";
+
+
+                }
+                else
+                {
+                    Customers c = new Customers();
+                    c.Email = username;
+                    c.Password = password;
+
+                    c.CustomerFirstName = firstname;
+                    c.CustomerLastName = lastname;
+                    context.Customers.Add(c);
+                    context.SaveChanges();
+                    Customers cus1 = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus1);
+                    HttpContext.Session.Remove("cartitem");
+                    HttpContext.Session.SetString("name", c.CustomerFirstName + " " + c.CustomerLastName);
+                    HttpContext.Session.SetString("cusid", cus1.CustomerId.ToString());
+                    
+                    return RedirectToAction("checkout");
+
+                }
+
+            }
+            return RedirectToAction("Index");
+
+
+
         }
         [Route("Search")]
         [HttpPost]
