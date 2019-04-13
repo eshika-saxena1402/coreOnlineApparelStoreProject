@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApparelStoreUserPortal.Controllers
 {
     public class BrandController : Controller
-    {
-        OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
-
+    {        
+        private readonly OnlineApparelStoreDbContext context;
+        public BrandController(OnlineApparelStoreDbContext _context)
+        {
+            context = _context;
+        }
         public IActionResult Display()
         {
             var brands = context.Brands.ToList();
@@ -20,7 +23,6 @@ namespace ApparelStoreUserPortal.Controllers
         {
             var products = context.Products.Where(x => x.BrandId == id).ToList();
             return View(products);
-
         }
     }
 }

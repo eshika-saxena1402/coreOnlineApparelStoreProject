@@ -12,7 +12,11 @@ namespace ApparelStoreUserPortal.Controllers
 {
     public class HomeController : Controller
     {
-        OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
+        private readonly OnlineApparelStoreDbContext context;
+        public HomeController(OnlineApparelStoreDbContext _context)
+        {
+            context = _context;
+        }
         public IActionResult Index()
         {          
             var products = context.Products.ToList();

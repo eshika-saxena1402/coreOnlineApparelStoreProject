@@ -10,7 +10,11 @@ namespace ApparelStoreUserPortal.Controllers
 {
     public class DetailController : Controller
     {
-        OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
+        private readonly OnlineApparelStoreDbContext context;
+        public DetailController(OnlineApparelStoreDbContext _context)
+        {
+            context = _context;
+        }
         [Route("index")]
         public IActionResult Index()
          {

@@ -12,7 +12,11 @@ namespace ApparelStoreUserPortal.Controllers
     [Route("cart")]
     public class CartController : Controller
     {
-        OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
+        private readonly OnlineApparelStoreDbContext context;
+        public CartController(OnlineApparelStoreDbContext _context)
+        {
+            context = _context;
+        }
         [Route("index")] 
        public IActionResult Index()
         {         

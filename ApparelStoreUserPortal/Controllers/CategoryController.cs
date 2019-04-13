@@ -9,8 +9,12 @@ namespace ApparelStoreUserPortal.Controllers
 {
     public class CategoryController : Controller
     {
-        OnlineApparelStoreDbContext context = new OnlineApparelStoreDbContext();
-        
+        private readonly OnlineApparelStoreDbContext context;
+        public CategoryController(OnlineApparelStoreDbContext _context)
+        {
+            context = _context;
+        }
+
         public IActionResult Display()
         {
             var categories = context.Categories.ToList();
