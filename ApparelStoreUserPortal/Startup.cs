@@ -13,6 +13,7 @@ using ApparelStoreUserPortal.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ApparelStoreUserPortal.Models;
+using Stripe;
 
 namespace ApparelStoreUserPortal
 {
@@ -39,7 +40,8 @@ namespace ApparelStoreUserPortal
                 .AddEntityFrameworkStores<OnlineApparelStoreDbContext>();
             services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+           services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +57,7 @@ namespace ApparelStoreUserPortal
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

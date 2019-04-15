@@ -6,6 +6,7 @@ using ApparelStoreUserPortal.Models;
 using Microsoft.AspNetCore.Mvc;
 using ApparelStoreUserPortal.Helper;
 using Microsoft.AspNetCore.Http;
+using Stripe;
 
 namespace ApparelStoreUserPortal.Controllers
 {
@@ -166,13 +167,14 @@ namespace ApparelStoreUserPortal.Controllers
             }
             orderProducts.ForEach(n => context.OrderProducts.Add(n));
             context.SaveChanges();
+          
             TempData["cust"] = customer.CustomerId;
-           return RedirectToAction("Status", "cart");
+           return RedirectToAction("index", "payment");
         
         }
 
         [Route("Status")]
-        public IActionResult Status()
+        public IActionResult Status(string stripeEmail, string stripeToken)
         {
             int CustId = int.Parse(TempData["cust"].ToString());
             Customers customers = context.Customers.Where(x => x.CustomerId == CustId).SingleOrDefault();
@@ -196,6 +198,23 @@ namespace ApparelStoreUserPortal.Controllers
             cart = null;
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             HttpContext.Session.Remove("cartitem");
+            var customers1 = new CustomerService();
+            var charges = new ChargeService();
+
+            var customer = customers1.Create(new CustomerCreateOptions
+            {
+                Email = stripeEmail,
+                SourceToken = stripeToken
+            });
+
+            var charge = charges.Create(new ChargeCreateOptions
+            {
+                Amount =(long) total,
+                Description = "Sample Charge",
+                Currency = "usd",
+                CustomerId = customer.Id
+            });
+
             return View();
         }
 

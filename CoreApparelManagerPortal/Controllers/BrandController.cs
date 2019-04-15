@@ -25,10 +25,11 @@ namespace CoreApparelManagerPortal.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create([Bind("BrandName")]Brands B)
+        public ActionResult Create(string BrandDescription,[Bind("BrandName")]Brands B)
         {
             if (ModelState.IsValid)
             {
+                B.BrandDescription = BrandDescription;
                 context.Brands.Add(B);
                 context.SaveChanges();
                 return RedirectToAction("Index");
@@ -55,7 +56,7 @@ namespace CoreApparelManagerPortal.Controllers
         {
             Brands ban = context.Brands.Where(x => x.BrandId == id).SingleOrDefault();
             return View(ban);
-        }
+        }       
         [HttpPost]
         public ActionResult Edit(int id, Brands b1)
         {

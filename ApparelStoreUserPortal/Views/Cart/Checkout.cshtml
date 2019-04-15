@@ -81,37 +81,37 @@
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Billing address</h4>
                 <form class="needs-validation" novalidate asp-action="Checkout">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="firstName">First name</label>
-                            <input type="text" class="form-control" placeholder="First Name" value="@ViewBag.Customers.CustomerFirstName" required asp-for="CustomerFirstName">
-                            <span asp-validation-for="CustomerFirstName" class="text-danger"></span>
-                            <div class="invalid-feedback">
-                                Valid first name is required.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="lastName">Last name</label>
-                            <input type="text" class="form-control" placeholder="Last Name" value="@ViewBag.Customers.CustomerLastName" required asp-for="CustomerLastName">
-                            <span asp-validation-for="CustomerLastName" class="text-danger"></span>
-                            <div class="invalid-feedback">
-                                Valid last name is required.
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="Gender">Gender</label>
-                            <select class="custom-select d-block w-100" id="gender" value="" required asp-for="Gender">
-                                <option value="@ViewBag.Customers.Gender">@ViewBag.Customers.Gender</option>                        
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>TransGender</option>                              
-                            </select>
 
-                            <div class="invalid-feedback">
-                                Please select a valid country.
-                            </div>
+                    <div class="mb-3 ">
+                        <label for="firstName">First name</label>
+                        <input type="text" class="form-control" placeholder="First Name" value="@ViewBag.Customers.CustomerFirstName" required asp-for="CustomerFirstName">
+                        <span asp-validation-for="CustomerFirstName" class="text-danger"></span>
+                        <div class="invalid-feedback">
+                            Valid first name is required.
                         </div>
                     </div>
+                    <div class="mb-3 ">
+                        <label for="lastName">Last name</label>
+                        <input type="text" class="form-control" placeholder="Last Name" value="@ViewBag.Customers.CustomerLastName" required asp-for="CustomerLastName">
+                        <span asp-validation-for="CustomerLastName" class="text-danger"></span>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                    <div class="mb-3 ">
+                        <label for="Gender">Gender</label>
+                        <select class="custom-select d-block w-100" id="gender" value="" required asp-for="Gender">
+                            <option value="@ViewBag.Customers.Gender">@ViewBag.Customers.Gender</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>TransGender</option>
+                        </select>
+
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                    </div>
+
 
                     <div class="mb-3">
                         <label for="username">Username</label>
@@ -154,9 +154,9 @@
                     </div>
 
 
-
                     <div class="row">
-                        <div class="col-md-6 mb-3">
+
+                        <div class="md-5 mb-3 ">
                             <label for="country">Country</label>
                             <select class="custom-select d-block w-100" id="country" value="" required asp-for="Country">
                                 <option value="@ViewBag.Customers.Country">@ViewBag.Customers.Country</option>
@@ -172,8 +172,8 @@
                             <div class="invalid-feedback">
                                 Please select a valid country.
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="md-5 mb-3 ">
                             <label for="state">State</label>
                             <select class="custom-select d-block w-100" id="state" value="" required asp-for="State">
                                 <option value="@ViewBag.Customers.State">@ViewBag.Customers.State</option>
@@ -186,12 +186,12 @@
                                 <option>Kashmir</option>
                                 <option>Andra Pradesh</option>
                                 <option>Kerala</option>
-                            </select>                          
+                            </select>
                             <div class="invalid-feedback">
                                 Please provide a valid state.
                             </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="md-5 mb-3">
                             <label for="zip">Zip</label>
                             <input type="text" class="form-control" id="zip" placeholder="ZipCode" value="@ViewBag.Customers.ZipCode" required asp-for="ZipCode">
                             <div class="invalid-feedback">
@@ -202,7 +202,7 @@
                     <hr class="mb-4">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" id="same_address_permanent" onclick="auto_fill_address();" value="@ViewBag.Customers.SameAddress" asp-for="SameAddress">
-                        <label asp-for="SameAddress" class="custom-control-label" for="same_address_permanent">Shipping address is the same as my billing address</label>                
+                        <label asp-for="SameAddress" class="custom-control-label" for="same_address_permanent">Shipping address is the same as my billing address</label>
                     </div>
                     <br />
 
@@ -252,50 +252,52 @@
                             Please enter a valid Phone Number
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="country">Country</label>
-                        <select class="custom-select d-block w-100" id="permanent_country" value="" required asp-for="Country2">
-                            <option value="@ViewBag.Customers.Country2">@ViewBag.Customers.Country2</option>
-                            <option>United States</option>
-                            <option>India</option>
-                            <option>Russia</option>
-                            <option>America</option>
-                            <option>Nepal</option>
-                            <option>China</option>
-                            <option>Africa</option>
-                        </select>
+                    <div class="row">
+                        <div class="md-5 mb-3 ">
+                            <label for="country">Country</label>
+                            <select class="custom-select d-block w-100" id="permanent_country" value="" required asp-for="Country2">
+                                <option value="@ViewBag.Customers.Country2">@ViewBag.Customers.Country2</option>
+                                <option>United States</option>
+                                <option>India</option>
+                                <option>Russia</option>
+                                <option>America</option>
+                                <option>Nepal</option>
+                                <option>China</option>
+                                <option>Africa</option>
+                            </select>
 
-                        <div class="invalid-feedback">
-                            Please select a valid country.
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="state">State</label>
-                        <select class="custom-select d-block w-100" id="permanent_state" value="" required asp-for="State2">
-                            <option value="@ViewBag.Customers.State2">@ViewBag.Customers.State2</option>
-                            <option>California</option>
-                            <option>Uttar Pradesh</option>
-                            <option>Punjab</option>
-                            <option>Delhi</option>
-                            <option>Madhya Pradesh</option>
-                            <option>Jammu </option>
-                            <option>Kashmir</option>
-                            <option>Andra Pradesh</option>
-                            <option>Kerala</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please provide a valid state.
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="zip">Zip</label>
-                        <input type="text" class="form-control" id="permanent_pincode" placeholder="" value="@ViewBag.Customers.ZipCode2" required asp-for="ZipCode2">
-                        <div class="invalid-feedback">
-                            Zip code required.
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="md-5 mb-3 ">
+                            <label for="state">State</label>
+                            <select class="custom-select d-block w-100" id="permanent_state" value="" required asp-for="State2">
+                                <option value="@ViewBag.Customers.State2">@ViewBag.Customers.State2</option>
+                                <option>California</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Punjab</option>
+                                <option>Delhi</option>
+                                <option>Madhya Pradesh</option>
+                                <option>Jammu </option>
+                                <option>Kashmir</option>
+                                <option>Andra Pradesh</option>
+                                <option>Kerala</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="md-5 mb-3 ">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="permanent_pincode" placeholder="" value="@ViewBag.Customers.ZipCode2" required asp-for="ZipCode2">
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
                         </div>
                     </div>
                     <hr class="mb-4">
-                    <a asp-controller="cart" asp-action="Checkout"><button type="submit" class="btn btn-primary btn-lg btn-block">Continue to checkout</button></a>
+                    <a asp-controller="cart" asp-action="Checkout"><button type="submit" class="btn btn-primary btn-lg btn-block">Continue to Payment</button></a>
 
                 </form>
             </div>

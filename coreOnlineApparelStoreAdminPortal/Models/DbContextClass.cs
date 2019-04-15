@@ -19,6 +19,8 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Manager> Managers { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<StripeSettings> StripeSettings { get; set; }
         public DbContextClass(DbContextOptions<DbContextClass> options) : base(options)
         {
         }
@@ -33,11 +35,6 @@ namespace coreOnlineApparelStoreAdminPortal.Models
             {
                 build.HasKey(t => new { t.OrderId, t.ProductId });
             });
-            modelBuilder.Entity<Cart>(build =>
-            {
-                build.HasKey(t => new { t.CustomerId, t.ProductId });
-            });
-
         }
     }
 }

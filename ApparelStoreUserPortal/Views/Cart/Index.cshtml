@@ -37,7 +37,7 @@
 
 </table>
 <br />
-<a asp-controller="home" asp-action="index" class="btn btn-primary">continue Shopping</a>
+
 <!--Modal: Login / Register Form-->
 <div class="modal fade" id="modalLRForm1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog cascading-modal" role="document">
@@ -148,6 +148,8 @@
     @if (ViewBag.i == 0)
     {<a href="" class="btn btn-success" data-toggle="modal" data-target="#modalLRForm1">CheckOut</a> }
     else
-    {<a class="btn btn-success" asp-action="Checkout" asp-controller="Cart">CheckOut</a>}
+    {
+     <a asp-controller="home" asp-action="index" class="btn btn-primary">continue Shopping</a>
+      <a class="btn btn-success" asp-action="Checkout" asp-controller="Cart">CheckOut</a>}
 
 </div>

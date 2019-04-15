@@ -14,15 +14,19 @@ namespace ApparelStoreUserPortal.Models
             : base(options)
         {
         }
+
         public virtual DbSet<Admins> Admins { get; set; }
         public virtual DbSet<Brands> Brands { get; set; }
         public virtual DbSet<Carts> Carts { get; set; }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
         public virtual DbSet<FeedBacks> FeedBacks { get; set; }
+        public virtual DbSet<Managers> Managers { get; set; }
         public virtual DbSet<OrderProducts> OrderProducts { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<Payments> Payments { get; set; }
         public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<StripeSettings> StripeSettings { get; set; }
         public virtual DbSet<Vendors> Vendors { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,7 +34,7 @@ namespace ApparelStoreUserPortal.Models
             if (!optionsBuilder.IsConfigured)
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=TRD-502; Database=OnlineApparelStoreDb; Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Server=TRD-502; Database=OnlineApparelStoreDb ;Integrated Security=True;");
             }
         }
 
@@ -50,7 +54,7 @@ namespace ApparelStoreUserPortal.Models
 
             modelBuilder.Entity<Carts>(entity =>
             {
-                entity.HasKey(e => new { e.CustomerId, e.ProductId });
+                entity.HasKey(e => e.CartId);
 
                 entity.HasIndex(e => e.CustomerId)
                     .IsUnique();
@@ -89,6 +93,11 @@ namespace ApparelStoreUserPortal.Models
                     .HasForeignKey(d => d.CustomerId);
             });
 
+            modelBuilder.Entity<Managers>(entity =>
+            {
+                entity.HasKey(e => e.ManagerId);
+            });
+
             modelBuilder.Entity<OrderProducts>(entity =>
             {
                 entity.HasKey(e => new { e.OrderId, e.ProductId });
@@ -115,6 +124,25 @@ namespace ApparelStoreUserPortal.Models
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId);
+            });
+
+            modelBuilder.Entity<Payments>(entity =>
+            {
+                entity.HasKey(e => e.PaymentId);
+
+                entity.HasIndex(e => e.OrderId)
+                    .IsUnique();
+
+                entity.HasIndex(e => e.StripeSettingsId)
+                    .IsUnique();
+
+                entity.HasOne(d => d.Order)
+                    .WithOne(p => p.Payments)
+                    .HasForeignKey<Payments>(d => d.OrderId);
+
+                entity.HasOne(d => d.StripeSettings)
+                    .WithOne(p => p.Payments)
+                    .HasForeignKey<Payments>(d => d.StripeSettingsId);
             });
 
             modelBuilder.Entity<Products>(entity =>

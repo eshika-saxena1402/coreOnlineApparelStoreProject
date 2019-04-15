@@ -16,6 +16,7 @@ namespace ApparelStoreUserPortal.Models
         public int CustomerId { get; set; }
 
         public Customers Customer { get; set; }
+        public Payments Payments { get; set; }
         public ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

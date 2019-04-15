@@ -25,10 +25,11 @@ namespace CoreApparelManagerPortal.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create([Bind("CategoryName")]Categories C)
+        public ActionResult Create(string CategoryDescription,[Bind("CategoryName")]Categories C)
         {
             if (ModelState.IsValid)
             {
+                C.CategoryDescription = CategoryDescription;
                 context.Categories.Add(C);
                 context.SaveChanges();
                 return RedirectToAction("Index");

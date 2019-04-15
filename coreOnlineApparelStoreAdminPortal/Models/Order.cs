@@ -11,5 +11,6 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
+        public Payment Payment { get; set; }
     }
 }

@@ -9,9 +9,8 @@ namespace coreOnlineApparelStoreAdminPortal.Models
 {
     public class Cart
     {
-        [Column(Order = 0), Key, ForeignKey("Customer")]
+        public int CartId { get; set; }
         public int CustomerId { get; set; }
-        [Column(Order = 1), Key, ForeignKey("Product")]
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public double TotalAmount { get; set; }
