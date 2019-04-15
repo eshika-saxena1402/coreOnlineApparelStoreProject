@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CoreApparelManagerPortal.Controllers
 {
+    [Route("Account")]
     public class AccountController : Controller
     {
         OnlineApparelStoreDbContext context;

@@ -262,7 +262,7 @@ namespace ApparelStoreUserPortal.Controllers
                 else
                 {
                     ViewBag.Error = "Register Email First";
-
+                    return RedirectToAction("invalid", "home");
                 }
 
 

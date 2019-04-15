@@ -146,7 +146,14 @@ namespace ApparelStoreUserPortal.Controllers
             context.SaveChanges();
             return RedirectToAction("UserProfile", "Cart", new { @id = c.Email });
         }
-
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Invalid()
+        {
+            return View();
+        }
     }
 }
 

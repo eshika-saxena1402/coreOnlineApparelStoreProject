@@ -33,7 +33,7 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" asp-action="Search" asp-controller="Home">
+            <form class="form-inline my-2 my-lg-0" asp-action="Search" asp-controller="Cart">
                 <input class="form-control mr-sm-2" name="search" type="text" placeholder="Search" aria-label="Search">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 &nbsp;
@@ -45,7 +45,7 @@
 
                 &nbsp;
                 @if (@Context.Session.GetString("name") == null)
-                {<a href="" class="btn btn-secondary my-2 my-sm-0" data-toggle="modal" data-target="#modalLRForm"><img src="~/images/Custoomerrr.jpg" width="30" height="24" />&nbsp;Login</a>
+                {<a  class="btn btn-secondary my-2 my-sm-0" data-toggle="modal" data-target="#modalLRForm"><img src="~/images/Custoomerrr.jpg" width="30" height="24" />&nbsp;Login</a>
                 }
                 else
                 {
