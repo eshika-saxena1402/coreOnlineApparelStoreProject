@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using coreOnlineApparelStoreAdminPortal.Models;
+using CoreApparelManagerPortal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace coreOnlineApparelStoreAdminPortal.Controllers
+namespace CoreApparelManagerPortal.Controllers
 {
-    [Route("account")]
     public class AccountController : Controller
     {
-        DbContextClass context;
-        public AccountController(DbContextClass _context)
+        OnlineApparelStoreDbContext context;
+        public AccountController(OnlineApparelStoreDbContext _context)
         {
             context = _context;
         }
@@ -21,17 +20,17 @@ namespace coreOnlineApparelStoreAdminPortal.Controllers
         [Route("~/")]
         [HttpGet]
         public IActionResult Index()
-        {           
+        {
             return View();
         }
         [Route("login")]
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            Admin ad = context.Admins.Where(x => x.Email == username).SingleOrDefault();
-            if (username != null && password != null && ad != null && password.Equals(ad.Password))
+            Managers ad = context.Managers.Where(x => x.ManagerEmail == username).SingleOrDefault();
+            if (username != null && password != null && ad != null && password.Equals(ad.ManagerPassword))
             {
-                HttpContext.Session.SetString("uname", ad.FirstName + " " + ad.LastName);
+                HttpContext.Session.SetString("uname", ad.ManagerFirstName + " " + ad.ManagerLastName);
                 return View("Home");
             }
             else
@@ -48,6 +47,5 @@ namespace coreOnlineApparelStoreAdminPortal.Controllers
             HttpContext.Session.Remove("uname");
             return RedirectToAction("Index");
         }
-
     }
 }

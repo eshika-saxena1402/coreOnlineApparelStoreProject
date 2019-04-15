@@ -21,6 +21,7 @@ namespace CoreApparelManagerPortal.Models
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Customers> Customers { get; set; }
         public virtual DbSet<FeedBacks> FeedBacks { get; set; }
+        public virtual DbSet<Managers> Managers { get; set; }
         public virtual DbSet<OrderProducts> OrderProducts { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
@@ -88,6 +89,11 @@ namespace CoreApparelManagerPortal.Models
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.FeedBacks)
                     .HasForeignKey(d => d.CustomerId);
+            });
+
+            modelBuilder.Entity<Managers>(entity =>
+            {
+                entity.HasKey(e => e.ManagerId);
             });
 
             modelBuilder.Entity<OrderProducts>(entity =>

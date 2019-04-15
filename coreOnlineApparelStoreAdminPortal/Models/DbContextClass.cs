@@ -18,6 +18,7 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public DbSet<Cart> Carts { get; set; }
         public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public DbContextClass(DbContextOptions<DbContextClass> options) : base(options)
         {
         }

@@ -71,6 +71,74 @@ namespace CoreApparelStoreUserPortalTesting
             });
         }
         [Fact]
+        public async void Task_Add_Checkout_Return_NotFound()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+            {
+                var controller = new CartController(context);
+                var CustomerId = 100;
+                var customer = new Customers()
+                {
+                    CustomerId = 1,
+                    CustomerFirstName = "Eshika",
+                    CustomerLastName = "Saxena",
+                    UserName = "eshu",
+                    Password = "eshu",
+                    Email = "eshika@gmail.com",
+                    Address = "Alpha-1, gREATER nOIDA",
+                    Address2 = "Alpha-1, gREATER nOIDA",
+                    State = "Uttar Pradesh",
+                    State2 = "Uttar Pradesh",
+                    Country = "India",
+                    Country2 = "India",
+                    PhoneNumber = 7599437873,
+                    AlternatePhoneNumber = 7599437873,
+                    ZipCode = 1234,
+                    ZipCode2 = 1234,
+                    Gender = "Female"
+                };
+                var data = controller.Checkout(customer);
+                Assert.IsType<NotFoundResult>(data);
+            });
+        }
+        [Fact]
+        public async void Task_Add_CheckOut_Return_BadRequest()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+            {
+                var controller = new CartController(context);
+                int? id = null;
+
+                var customer = new Customers()
+                {
+                    CustomerId = 1,
+                    CustomerFirstName = "Eshika",
+                    CustomerLastName = "Saxena",
+                    UserName = "eshu",
+                    Password = "eshu",
+                    Email = "eshika@gmail.com",
+                    Address = "Alpha-1, gREATER nOIDA",
+                    Address2 = "Alpha-1, gREATER nOIDA",
+                    State = "Uttar Pradesh",
+                    State2 = "Uttar Pradesh",
+                    Country = "India",
+                    Country2 = "India",
+                    PhoneNumber = 7599437873,
+                    AlternatePhoneNumber = 7599437873,
+                    ZipCode = 1234,
+                    ZipCode2 = 1234,
+                    Gender = "Female"
+
+
+                };
+                var data = controller.Checkout(customer);
+                Assert.IsType<BadRequestResult>(data);
+            });
+        }
+
+
+
+        [Fact]
         public void Task_remove_Return_View()
         {
             Assert.Throws<NullReferenceException>(() =>
@@ -94,7 +162,27 @@ namespace CoreApparelStoreUserPortalTesting
                 Assert.IsType<ViewResult>(data);
             });
         }
-
+        [Fact]
+        public void Task_Add_Login_Return_ReDirectToAction()
+        {
+            var controller = new CartController(context);
+            var CustomerEmail = "eshika@in.co";
+            var CustomerPassword = "Eshika";
+            var data = controller.Login(CustomerEmail, CustomerPassword);
+            Assert.IsType<RedirectToActionResult>(data);
+        }
+        [Fact]
+        public void Task_Add_Login_Return_BadRequest()
+        {
+            Assert.Throws<NullReferenceException>(() =>
+            {
+                var controller = new CartController(context);
+                var CustomerEmail = " ";
+                var CustomerPassword = " ";
+                var data = controller.Login(CustomerEmail, CustomerPassword);
+                Assert.IsType<BadRequestResult>(data);
+            });
+        }
         [Fact]
         public void Task_Register_Return_View()
         {
@@ -106,7 +194,19 @@ namespace CoreApparelStoreUserPortalTesting
             var data = controller.Regiter(CustomerEmail, CustomerPassword, CustomerFirstName, CustomerLastName);
             Assert.NotNull(data);
         }
+        [Fact]
+        public void Task_Add_Register_Return_RedirectToAction()
+        {
 
+            var controller = new CartController(context);
+            var CustomerFirstName = "Eshika";
+            var CustomerLastName = "Saxena";
+            var CustomerEmail = "Eshika@user.com";
+            var CustomerPassword = "654321";
+
+            var data = controller.Regiter(CustomerEmail, CustomerPassword, CustomerFirstName, CustomerLastName);
+            Assert.IsType<RedirectToActionResult>(data);
+        }
 
         [Fact]
         public void Task_Status_Return_View()

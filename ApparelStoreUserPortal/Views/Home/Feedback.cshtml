@@ -4,14 +4,43 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h2>Feedback</h2>
-
-<div>
-    <form asp-action="Feedback" asp-controller="Home">
-        <div class="form-group">
-            <label for="Message">Message</label>
-            <input type="text" class="form-control" placeholder="Description" asp-for="Message">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 ">
+            <div class="list-group ">
+                <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
+                <a asp-controller="Home" asp-action="EditPassword" class="list-group-item list-group-item-action">Edit Password</a>
+                <a asp-controller="Home" asp-action="EditProfile" class="list-group-item list-group-item-action">View Profile</a>
+                <a asp-controller="Home" asp-action="Feedback" class="list-group-item list-group-item-action">FeedBack</a>
+                <a asp-controller="Home" asp-action="logout" class="list-group-item list-group-item-action">LogOut</a>
+            </div>
         </div>
-        <a class="btn btn-primary" asp-action="userProfile" asp-controller="Home">Submit</a>
-    </form>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>Your FeedBack Matters To Us..</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div>
+                                <form asp-action="Feedback" asp-controller="Home">
+                                    <div class="form-group">
+                                        <label for="Message">Message</label>
+                                        <input type="text" class="form-control" placeholder="Description" asp-for="Message">
+                                    </div>
+                                    <a class="btn btn-primary" asp-action="userProfile" asp-controller="Home">Submit</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 </div>
