@@ -10,8 +10,8 @@ using coreOnlineApparelStoreAdminPortal.Models;
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    [Migration("20190405042557_feedback")]
-    partial class feedback
+    [Migration("20190416090837_initial11")]
+    partial class initial11
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,17 +72,21 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Cart", b =>
                 {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("CustomerId");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<DateTime>("ItemCreated");
+
+                    b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<double>("TotalAmount");
 
-                    b.HasKey("CustomerId", "ProductId");
+                    b.HasKey("CartId");
 
                     b.HasIndex("CustomerId")
                         .IsUnique();
@@ -170,6 +174,37 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     b.ToTable("FeedBacks");
                 });
 
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Manager", b =>
+                {
+                    b.Property<int>("ManagerId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ManagerAddress");
+
+                    b.Property<string>("ManagerCountry");
+
+                    b.Property<string>("ManagerEmail");
+
+                    b.Property<string>("ManagerFirstName");
+
+                    b.Property<string>("ManagerGender");
+
+                    b.Property<string>("ManagerLastName");
+
+                    b.Property<string>("ManagerPassword");
+
+                    b.Property<long>("ManagerPhoneNumber");
+
+                    b.Property<string>("ManagerState");
+
+                    b.Property<int>("ManagerZipCode");
+
+                    b.HasKey("ManagerId");
+
+                    b.ToTable("Managers");
+                });
+
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -202,6 +237,37 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("orderProducts");
+                });
+
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("Amount");
+
+                    b.Property<int>("CardDigit");
+
+                    b.Property<int>("CustomerId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<DateTime>("PaymentDate");
+
+                    b.Property<int>("StripeSettingsId");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.HasIndex("StripeSettingsId")
+                        .IsUnique();
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Product", b =>
@@ -239,6 +305,21 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.StripeSettings", b =>
+                {
+                    b.Property<int>("StripeSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PublishableKey");
+
+                    b.Property<string>("SecretKey");
+
+                    b.HasKey("StripeSettingsId");
+
+                    b.ToTable("StripeSettings");
                 });
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Vendor", b =>
@@ -299,6 +380,19 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Product", "Product")
                         .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Payment", b =>
+                {
+                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("coreOnlineApparelStoreAdminPortal.Models.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("coreOnlineApparelStoreAdminPortal.Models.StripeSettings", "StripeSettings")
+                        .WithOne("Payments")
+                        .HasForeignKey("coreOnlineApparelStoreAdminPortal.Models.Payment", "StripeSettingsId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

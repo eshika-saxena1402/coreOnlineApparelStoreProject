@@ -10,8 +10,8 @@ using coreOnlineApparelStoreAdminPortal.Models;
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    [Migration("20190415100614_Payment")]
-    partial class Payment
+    [Migration("20190416092726_initial111")]
+    partial class initial111
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -249,6 +249,8 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
                     b.Property<int>("CardDigit");
 
+                    b.Property<int>("CustomerId");
+
                     b.Property<string>("Description");
 
                     b.Property<int>("OrderId");
@@ -389,7 +391,7 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("coreOnlineApparelStoreAdminPortal.Models.StripeSettings", "StripeSettings")
-                        .WithOne("Payment")
+                        .WithOne("Payments")
                         .HasForeignKey("coreOnlineApparelStoreAdminPortal.Models.Payment", "StripeSettingsId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

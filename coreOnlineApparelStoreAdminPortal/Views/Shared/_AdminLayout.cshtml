@@ -28,6 +28,9 @@
                     <a class="nav-link" asp-controller="Category" asp-action="Index">Category</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="Customer" asp-action="Index">Customer</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Vendor" asp-action="Index">Vendors</a>
                 </li>
                 <li class="nav-item">
@@ -36,7 +39,21 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Product" asp-action="Index">Products</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="OrderProduct" asp-action="Index">Ordered_Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Order" asp-action="Index">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Manager" asp-action="Index">Manager</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="payment" asp-action="Index">Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="feedback" asp-action="Index">FeedBacks</a>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <label class="form-control">Welcome @Context.Session.GetString("uname")!!</label>

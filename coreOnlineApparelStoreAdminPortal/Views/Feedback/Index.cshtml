@@ -1,0 +1,31 @@
+﻿@model IEnumerable<coreOnlineApparelStoreAdminPortal.Models.FeedBack>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>FeedBack Details</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FeedBackId)</th>
+            <th>@Html.DisplayNameFor(model => model.Message)</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ban in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => ban.FeedBackId)</td>
+                <td>@Html.DisplayFor(modelItem => ban.Message)</td>
+
+                <td>
+                    <a asp-controller="Feedback" asp-action="Details" asp-route-id="@ban.FeedBackId"><button type="button" class="btn btn-light">Details</button></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

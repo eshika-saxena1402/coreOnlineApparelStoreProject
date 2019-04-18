@@ -16,5 +16,6 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public Order Order { get; set; }
         public int StripeSettingsId { get; set; }
         public StripeSettings StripeSettings { get; set; }
+        public int CustomerId { get; set; }
     }
 }

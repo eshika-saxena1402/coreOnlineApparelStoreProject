@@ -113,44 +113,62 @@ namespace ApparelStoreUserPortal.Controllers
         [HttpGet]
         public IActionResult EditPassword()
         {
+            Customers c = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+            ViewBag.pas = c.Password;
             return View();
         }
         [HttpPost]
-        public IActionResult EditPassword(string oldpassword, string newpassword, string newpassword1)
+        public IActionResult EditPassword([Bind("Password")]string oldpassword, string newpassword, string newpassword1)
         {
-
-            Customers c = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
-            if (oldpassword == c.Password && newpassword == newpassword1)
+            if (ModelState.IsValid)
             {
-                Customers cus = context.Customers.Where(x => x.Email == c.Email).SingleOrDefault();
-                cus.Password = newpassword;
-                context.SaveChanges();
-                return RedirectToAction("logout", "home");
+                Customers c = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+                if (oldpassword == c.Password && newpassword == newpassword1)
+                {
+                    Customers cus = context.Customers.Where(x => x.Email == c.Email).SingleOrDefault();
+                    cus.Password = newpassword;
+                    context.SaveChanges();
+                    return RedirectToAction("logout", "home");
+                }
             }
-
             return RedirectToAction("index");
         }
+        [Route("Feedback")]
         [HttpGet]
         public IActionResult Feedback()
         {
-
+            Customers c = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+            ViewBag.name = c.CustomerFirstName;
+            ViewBag.email = c.Email;
+          
             return View();
         }
+        [Route("Feedback")]
         [HttpPost]
-        public ActionResult Feedback(FeedBacks feedBacks)
+        [ValidateAntiForgeryToken]
+        public ActionResult Feedback([Bind("Message")]FeedBacks feedBacks)
         {
             Customers c = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
-            feedBacks.CustomerId = c.CustomerId;
-            feedBacks.Message = feedBacks.Message;
-            context.FeedBacks.Add(feedBacks);
-            context.SaveChanges();
-            return RedirectToAction("UserProfile", "Cart", new { @id = c.Email });
+           
+            if (ModelState.IsValid)
+            {
+                feedBacks.CustomerId = c.CustomerId;
+                feedBacks.Message = feedBacks.Message;              
+                context.FeedBacks.Add(feedBacks);
+                context.SaveChanges();                
+            }
+            
+            return RedirectToAction("UserProfile");
         }
         public IActionResult About()
         {
             return View();
         }
         public IActionResult Invalid()
+        {
+            return View();
+        }
+        public IActionResult usedEmail()
         {
             return View();
         }

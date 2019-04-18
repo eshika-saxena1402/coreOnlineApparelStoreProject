@@ -1,0 +1,41 @@
+﻿@model coreOnlineApparelStoreAdminPortal.Models.Order
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Editing Order</h2>
+
+<div class="row">
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+    <div class="col-lg-4">
+        <form asp-action="Edit" asp-controller="Order">
+            <div class="form-group">
+                <label for="OrderId">OrderId</label>
+                <input type="text" class="form-control" asp-for="OrderId" />
+                <br />
+                <label for="OrderDate">OrderDate</label>
+                <input type="text" class="form-control" asp-for="OrderDate">
+            </div>
+            <div class="form-group">
+                <label for="OrderAmount">OrderAmount</label>
+                <input type="text" class="form-control" asp-for="OrderAmount">
+            </div>
+            <div class="form-group">
+                <label for="CustomerId">CustomerId</label>
+                <input type="text" class="form-control" asp-for="CustomerId">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+        <br />
+        <a asp-controller="Order" asp-action="Index"><button type="submit" class="btn btn-primary">BackToList</button></a>
+
+    </div>
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+</div>
+

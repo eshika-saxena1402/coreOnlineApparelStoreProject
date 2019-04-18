@@ -1,0 +1,69 @@
+﻿@model coreOnlineApparelStoreAdminPortal.Models.Manager
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Are You Sure You Want To Delete</h3>
+<div class="row">
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <div class="form-group">
+                <input type="hidden" class="form-control" asp-for="ManagerId">
+            </div>
+            <div class="form-group">
+                <label for="ManagerFirstName">ManagerFirstName</label>
+                <input type="text" class="form-control" placeholder="Enter Name" asp-for="ManagerFirstName">
+                <span asp-validation-for="ManagerFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="ManagerLastName">ManagerLastName</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerLastName">
+            </div>
+            <div class="form-group">
+                <label for="ManagerEmail">ManagerEmail</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerEmail">
+            </div>
+            <div class="form-group">
+                <label for="ManagerGender">ManagerGender</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerGender">
+            </div>
+            <div class="form-group">
+                <label for="ManagerAddress">ManagerAddress</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerAddress">
+            </div>
+            <div class="form-group">
+                <label for="ManagerCountry">ManagerCountry</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerCountry">
+            </div>
+            <div class="form-group">
+                <label for="ManagerState">ManagerState</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerState">
+            </div>
+            <div class="form-group">
+                <label for="ManagerZipCode">ManagerZipNumber</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerZipCode">
+            </div>
+            <div class="form-group">
+                <label for="ManagerPhoneNumber">ManagerPhoneNumber</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerPhoneNumber">
+            </div>
+            <div class="form-group">
+                <label for="ManagerPassword">ManagerPassword</label>
+                <input type="text" class="form-control" placeholder="Description" asp-for="ManagerPassword">
+            </div>
+
+
+            <form asp-action="Delete" asp-controller="Manager">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+            <a asp-controller="Manager" asp-action="Index"><button type="submit" class="btn btn-primary">BackToList</button></a>
+        </div>
+        <div class="col-lg-4">
+            &nbsp;
+        </div>
+    </div>
+

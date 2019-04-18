@@ -19,7 +19,7 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public DbSet<FeedBack> FeedBacks { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Manager> Managers { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public virtual DbSet<StripeSettings> StripeSettings { get; set; }
         public DbContextClass(DbContextOptions<DbContextClass> options) : base(options)
         {

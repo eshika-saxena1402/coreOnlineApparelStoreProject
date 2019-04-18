@@ -12,6 +12,7 @@ namespace ApparelStoreUserPortal.Models
         public string Description { get; set; }
         public int OrderId { get; set; }
         public int StripeSettingsId { get; set; }
+        public int CustomerId { get; set; }
         public Orders Order { get; set; }
         public StripeSettings StripeSettings { get; set; }
     }

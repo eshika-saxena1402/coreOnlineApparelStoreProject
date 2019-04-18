@@ -1,0 +1,35 @@
+﻿@model IEnumerable<coreOnlineApparelStoreAdminPortal.Models.Manager>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Manager Details</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ManagerId)</th>
+            <th>@Html.DisplayNameFor(model => model.ManagerFirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.ManagerEmail)</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ban in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => ban.ManagerId)</td>
+                <td>@Html.DisplayFor(modelItem => ban.ManagerFirstName)</td>
+                <td>@Html.DisplayFor(modelItem => ban.ManagerEmail)</td>
+                <td>
+                    <a asp-controller="Manager" asp-action="Details" asp-route-id="@ban.ManagerId"><button type="button" class="btn btn-light">Details</button></a>||
+                    <a asp-controller="Manager" asp-action="Edit" asp-route-id="@ban.ManagerId"><button type="button" class="btn btn-light">Edit</button></a>||
+                    <a asp-controller="Manager" asp-action="Delete" asp-route-id="@ban.ManagerId"><button type="button" class="btn btn-light">Delete</button></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller="Manager" asp-action="Create"><button type="button" class="btn btn-info">Create</button></a>

@@ -1,46 +1,168 @@
 ﻿@model ApparelStoreUserPortal.Models.FeedBacks
-@{
-    ViewData["Title"] = "Feedback";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
-}
+    @{
+        ViewData["Title"] = "Feedback";
+        Layout = "~/Views/Shared/_UserLayout.cshtml";
+    }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 ">
-            <div class="list-group ">
-                <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-                <a asp-controller="Home" asp-action="EditPassword" class="list-group-item list-group-item-action">Edit Password</a>
-                <a asp-controller="Home" asp-action="EditProfile" class="list-group-item list-group-item-action">View Profile</a>
-                <a asp-controller="Home" asp-action="Feedback" class="list-group-item list-group-item-action">FeedBack</a>
-                <a asp-controller="Home" asp-action="logout" class="list-group-item list-group-item-action">LogOut</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 ">
+                <div class="list-group ">
+                    <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
+                    <a asp-controller="Home" asp-action="EditPassword" class="list-group-item list-group-item-action">Edit Password</a>
+                    <a asp-action="CustomerHistory" asp-controller="Home" class="list-group-item list-group-item-action">View Order History</a>
+                    <a asp-controller="Home" asp-action="EditProfile" class="list-group-item list-group-item-action">View Profile</a>
+                    <a asp-controller="Home" asp-action="Feedback" class="list-group-item list-group-item-action">FeedBack</a>
+                    <a asp-controller="Home" asp-action="logout" class="list-group-item list-group-item-action">LogOut</a>
+                </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h4>Your FeedBack Matters To Us..</h4>
-                            <hr>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Your FeedBack Matters To Us..</h4>
+                                <hr>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div>
-                                <form asp-action="Feedback" asp-controller="Home">
-                                    <div class="form-group">
-                                        <label for="Message">Message</label>
-                                        <input type="text" class="form-control" placeholder="Description" asp-for="Message">
-                                    </div>
-                                    <a class="btn btn-primary" asp-action="userProfile" asp-controller="Home">Submit</a>
-                                </form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    <form name="myForm" asp-action="Feedback" asp-controller="Home" onsubmit="return validateForm()">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger">  </div>
+                                        <div class="container">
+                                            <div class="imagebg"></div>
+                                            <div class="row " style="margin-top: -20px">
+                                                <div class="col-md-3">
+                                                    &nbsp;&nbsp;
+                                                </div>
+                                                <div class="col-md-6 col-md-offset-6 form-container">    
+                                                    <br/>
+                                                    <form role="form" method="post" id="reused_form">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 form-group">
+                                                                <textarea name="Message" class="form-control" type="textarea"  id="comments" placeholder="Your Comments" maxlength="6000" rows="7" asp-for="Message"></textarea>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6 form-group">
+                                                                <label for="name">
+                                                                    Your Name:
+                                                                </label>
+                                                                <input type="text" class="form-control" id="name" name="name" value="@ViewBag.name" required readonly>
+                                                            </div>
+                                                            <div class="col-sm-6 form-group">
+                                                                <label for="email">
+                                                                    Email:
+                                                                </label>
+                                                                <input type="email" class="form-control" id="email" name="email" value="@ViewBag.email" required readonly>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12 form-group">
+                                                 
+                                                                <button type="submit" id="btn1" class="btn btn-lg btn-warning btn-block">Post </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <div id="success_message" style="width:100%; height:100%; display:none; ">
+                                                        <h3>Posted your feedback successfully!</h3>
+                                                    </div>
+                                                    <div id="error_message"
+                                                         style="width:100%; height:100%; display:none; ">
+                                                        <h3>Error</h3>
+                                                        Sorry there was an error sending your form.
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            $(function () {
+                                                function after_form_submitted(data) {
+                                                    if (data.result == 'success') {
+                                                        $('form#reused_form').hide();
+                                                        $('#success_message').show();
+                                                        $('#error_message').hide();
+                                                    }
+                                                    else {
+                                                        $('#error_message').append('<ul></ul>');
+
+                                                        jQuery.each(data.errors, function (key, val) {
+                                                            $('#error_message ul').append('<li>' + key + ':' + val + '</li>');
+                                                        });
+                                                        $('#success_message').hide();
+                                                        $('#error_message').show();
+
+                                                        //reverse the response on the button
+                                                        $('button[type="button"]', $form).each(function () {
+                                                            $btn = $(this);
+                                                            label = $btn.prop('orig_label');
+                                                            if (label) {
+                                                                $btn.prop('type', 'submit');
+                                                                $btn.text(label);
+                                                                $btn.prop('orig_label', '');
+                                                            }
+                                                        });
+
+                                                    }//else
+                                                }
+
+                                                $('#reused_form').submit(function (e) {
+                                                    e.preventDefault();
+
+                                                    $form = $(this);
+                                                    //show some response on the button
+                                                    $('button[type="submit"]', $form).each(function () {
+                                                        $btn = $(this);
+                                                        $btn.prop('type', 'button');
+                                                        $btn.prop('orig_label', $btn.text());
+                                                        $btn.text('Sending ...');
+                                                    });
+
+
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: 'http://reusableforms.com/handler/d4/feedback-form-in-html',
+                                                        data: $form.serialize(),
+                                                        success: after_form_submitted,
+                                                        dataType: 'json'
+                                                    });
+
+                                                });
+                                            });
+                                        </script>
+
+                                        @*<div class="form-group">
+            <label for="Message">Message</label>
+            <input name="message" type="text" class="form-control" placeholder="Description" asp-for="Message">
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>*@
+                                        <script>
+                                            function validateForm() {
+                                                var x = document.forms["myForm"]["Message"].value;
+                                                if (x == "") {
+                                                    document.getElementById("btn1").disable = true;
+                                                    alert("Message must be filled out");
+                                                    return false;
+                                                }
+                                              
+                                            }
+                                        </script>
+                                        
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
+           
+               

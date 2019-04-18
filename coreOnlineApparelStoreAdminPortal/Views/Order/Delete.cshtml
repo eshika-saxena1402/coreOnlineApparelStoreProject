@@ -1,0 +1,49 @@
+﻿@model coreOnlineApparelStoreAdminPortal.Models.Order
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h3>Are You Sure You Want To Delete</h3>
+
+<div class="row">
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+    <div class="col-lg-4">
+        <div class="form-group">
+            <div class="form-group">
+
+
+                <input type="hidden" class="form-control" asp-for="OrderId">
+            </div>
+            <div class="form-group">
+
+                <label for="OrderDate">OrderDate</label>
+                <input type="text" class="form-control" asp-for="OrderDate">
+            </div>
+            <div class="form-group">
+                <label for="OrderAmount">OrderAmount</label>
+                <input type="text" class="form-control" asp-for="OrderAmount">
+            </div>
+            <div class="form-group">
+                <label for="OrderAmount">OrderAmount</label>
+                <input type="text" class="form-control" asp-for="OrderAmount">
+            </div>
+            <div class="form-group">
+                <label for="CustomeFisrtName">Customer Name</label>
+                <div class="form-control">
+                    @Html.DisplayFor(m => m.CustomerId)
+                </div>
+                @*<input type="text" class="form-control" asp-for="BrandId">*@
+            </div>
+            <form asp-action="Delete" asp-controller="Order">
+                <button type="submit" class="btn btn-primary">Delete</button>
+
+            </form>
+            <a asp-controller="Order" asp-action="Index"><button type="submit" class="btn btn-primary">BackToList</button></a>
+        </div>
+        <div class="col-lg-4">
+            &nbsp;
+        </div>
+    </div>

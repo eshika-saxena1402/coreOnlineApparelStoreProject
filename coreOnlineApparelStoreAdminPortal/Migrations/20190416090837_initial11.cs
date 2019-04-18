@@ -4,40 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
-    public partial class Payment : Migration
+    public partial class initial11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Carts",
-                table: "Carts");
-
-            migrationBuilder.AddColumn<int>(
-                name: "CartId",
-                table: "Carts",
-                nullable: false,
-                defaultValue: 0)
-                .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Carts",
-                table: "Carts",
-                column: "CartId");
-
-            migrationBuilder.CreateTable(
-                name: "StripeSettings",
-                columns: table => new
-                {
-                    StripeSettingsId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SecretKey = table.Column<string>(nullable: true),
-                    PublishableKey = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StripeSettings", x => x.StripeSettingsId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
@@ -49,7 +19,8 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     CardDigit = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     OrderId = table.Column<int>(nullable: false),
-                    StripeSettingsId = table.Column<int>(nullable: false)
+                    StripeSettingsId = table.Column<int>(nullable: false),
+                    CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,22 +56,6 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Payments");
-
-            migrationBuilder.DropTable(
-                name: "StripeSettings");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Carts",
-                table: "Carts");
-
-            migrationBuilder.DropColumn(
-                name: "CartId",
-                table: "Carts");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Carts",
-                table: "Carts",
-                columns: new[] { "CustomerId", "ProductId" });
         }
     }
 }

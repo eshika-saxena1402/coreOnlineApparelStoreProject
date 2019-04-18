@@ -1,0 +1,31 @@
+﻿@model IEnumerable<coreOnlineApparelStoreAdminPortal.Models.Payment>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Payment Details</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.PaymentId)</th>
+            <th>@Html.DisplayNameFor(model => model.PaymentDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Amount)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ban in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => ban.PaymentId)</td>
+                <td>@Html.DisplayFor(modelItem => ban.PaymentDate)</td>
+                <td>@Html.DisplayFor(modelItem => ban.Amount)</td>
+                <td>
+                    <a asp-controller="payment" asp-action="Details" asp-route-id="@ban.PaymentId"><button type="button" class="btn btn-light">Details</button></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,75 @@
+﻿@model coreOnlineApparelStoreAdminPortal.Models.Payment
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Details of Payment</h2>
+<div class="row">
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+    <div class="col-lg-4">
+
+        <div class="form-group">
+            <label for="PaymentId">PaymentId</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.PaymentId)
+            </div>
+
+            <br />
+            <label for="Amount">Amount</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.Amount)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandName" />*@
+        </div>
+        <div class="form-group">
+            <label for="PaymentDate">PaymentDate</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.PaymentDate)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <div class="form-group">
+            <label for="CardDigit">Card Digit </label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.CardDigit)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.Description)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <div class="form-group">
+            <label for="OrderId">OrderId</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.OrderId)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <div class="form-group">
+            <label for="CustomerId">CustomerId</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.CustomerId)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <div class="form-group">
+            <label for="StripeSettingsId">Stripe SettingId</label>
+            <div class="form-control">
+                @Html.DisplayFor(m => m.StripeSettingsId)
+            </div>
+            @*<input type="text" class="form-control" asp-for="BrandDescription" />*@
+        </div>
+        <a asp-controller="Feedback" asp-action="Index"><button type="submit" class="btn btn-primary"> BackToList</button></a>
+
+    </div>
+    <div class="col-lg-4">
+        &nbsp;
+    </div>
+</div>

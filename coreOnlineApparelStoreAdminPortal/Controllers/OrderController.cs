@@ -7,42 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace coreOnlineApparelStoreAdminPortal.Controllers
 {
-    public class CustomerController : Controller
+    public class OrderController : Controller
     {
         DbContextClass context;
-        public CustomerController(DbContextClass _context)
+        public OrderController(DbContextClass _context)
         {
             context = _context;
         }
         public ViewResult Index()
         {
-            var cat = context.Customers.ToList();
+            var cat = context.Orders.ToList();
             return View(cat);
         }
-
         public ActionResult Delete(int id)
         {
-            Customer cat = context.Customers.Find(id);
+            Order cat = context.Orders.Find(id);
             return View(cat);
         }
         [HttpPost]
-        public ActionResult Delete(int id, Customer c1)
+        public ActionResult Delete(int id, Order c1)
         {
-            Customer c = context.Customers.Where(x => x.CustomerId == id).SingleOrDefault();
-            context.Customers.Remove(c);
+            Order c = context.Orders.Where(x => x.OrderId == id).SingleOrDefault();
+            context.Orders.Remove(c);
             context.SaveChanges();
             return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Customer cat = context.Customers.Where(x => x.CustomerId == id).SingleOrDefault();
+            Order cat = context.Orders.Where(x => x.OrderId == id).SingleOrDefault();
             return View(cat);
         }
         [HttpPost]
-        public ActionResult Edit(int id, Customer c1)
+        public ActionResult Edit(int id, Order c1)
         {
-            Customer c = context.Customers.Where(x => x.CustomerId == c1.CustomerId).SingleOrDefault();
+            Order c = context.Orders.Where(x => x.OrderId == c1.OrderId).SingleOrDefault();
             context.Entry(c).CurrentValues.SetValues(c1);
             context.SaveChanges();
             return RedirectToAction("Index");
@@ -50,7 +49,7 @@ namespace coreOnlineApparelStoreAdminPortal.Controllers
         }
         public ActionResult Details(int id)
         {
-            Customer c = context.Customers.Where(x => x.CustomerId == id).SingleOrDefault();
+            Order c = context.Orders.Where(x => x.OrderId == id).SingleOrDefault();
             return View(c);
         }
     }

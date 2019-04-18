@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<coreOnlineApparelStoreAdminPortal.Models.Customer>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -6,3 +6,31 @@
 
 <h2>Customer Details</h2>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.CustomerId)</th>
+            <th>@Html.DisplayNameFor(model => model.CustomerFirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.CustomerLastName)</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cat in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => cat.CustomerId)</td>
+                <td>@Html.DisplayFor(modelItem => cat.CustomerFirstName)</td>
+                <td>@Html.DisplayFor(modelItem => cat.CustomerLastName)</td>
+                <td>
+
+                    <a asp-controller="Customer" asp-action="Details" asp-route-id="@cat.CustomerId"><button type="button" class="btn btn-light">Details</button></a>||
+                    <a asp-controller="Customer" asp-action="Edit" asp-route-id="@cat.CustomerId"><button type="button" class="btn btn-light">Edit</button></a>||
+
+                    <a asp-controller="Customer" asp-action="Delete" asp-route-id="@cat.CustomerId"><button type="button" class="btn btn-light">Delete</button></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

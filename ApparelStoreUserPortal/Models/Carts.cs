@@ -5,12 +5,12 @@ namespace ApparelStoreUserPortal.Models
 {
     public partial class Carts
     {
+        public int CartId { get; set; }
         public int CustomerId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public double TotalAmount { get; set; }
         public DateTime ItemCreated { get; set; }
-        public int CartId { get; set; }
 
         public Customers Customer { get; set; }
         public Products Product { get; set; }

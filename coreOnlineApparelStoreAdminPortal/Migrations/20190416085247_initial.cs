@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
-    public partial class feedback : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,6 +86,42 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Managers",
+                columns: table => new
+                {
+                    ManagerId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ManagerFirstName = table.Column<string>(nullable: true),
+                    ManagerLastName = table.Column<string>(nullable: true),
+                    ManagerPassword = table.Column<string>(nullable: true),
+                    ManagerEmail = table.Column<string>(nullable: true),
+                    ManagerAddress = table.Column<string>(nullable: true),
+                    ManagerCountry = table.Column<string>(nullable: true),
+                    ManagerState = table.Column<string>(nullable: true),
+                    ManagerZipCode = table.Column<int>(nullable: false),
+                    ManagerPhoneNumber = table.Column<long>(nullable: false),
+                    ManagerGender = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Managers", x => x.ManagerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StripeSettings",
+                columns: table => new
+                {
+                    StripeSettingsId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    SecretKey = table.Column<string>(nullable: true),
+                    PublishableKey = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StripeSettings", x => x.StripeSettingsId);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,9 +220,42 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<double>(nullable: false),
+                    PaymentDate = table.Column<DateTime>(nullable: false),
+                    CardDigit = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    OrderId = table.Column<int>(nullable: false),
+                    StripeSettingsId = table.Column<int>(nullable: false),
+                    CustomerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_StripeSettings_StripeSettingsId",
+                        column: x => x.StripeSettingsId,
+                        principalTable: "StripeSettings",
+                        principalColumn: "StripeSettingsId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Carts",
                 columns: table => new
                 {
+                    CartId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CustomerId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
@@ -195,7 +264,7 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carts", x => new { x.CustomerId, x.ProductId });
+                    table.PrimaryKey("PK_Carts", x => x.CartId);
                     table.ForeignKey(
                         name: "FK_Carts_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -262,6 +331,18 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_StripeSettingsId",
+                table: "Payments",
+                column: "StripeSettingsId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_BrandId",
                 table: "Products",
                 column: "BrandId");
@@ -289,16 +370,22 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                 name: "FeedBacks");
 
             migrationBuilder.DropTable(
+                name: "Managers");
+
+            migrationBuilder.DropTable(
                 name: "orderProducts");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "StripeSettings");
 
             migrationBuilder.DropTable(
                 name: "Brands");
@@ -308,6 +395,9 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vendors");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
         }
     }
 }

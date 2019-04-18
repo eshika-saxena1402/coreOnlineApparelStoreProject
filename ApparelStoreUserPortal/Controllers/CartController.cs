@@ -22,6 +22,14 @@ namespace ApparelStoreUserPortal.Controllers
        public IActionResult Index()
         {         
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+            foreach (var it in cart)
+            {
+                if (it.ItemQuantity == it.Products.ProductQuantity)
+                {
+                    ViewBag.j = it.Products.ProductId;
+                }
+            }
+
             int i = 0;
             if (cart != null)
             {
@@ -46,6 +54,11 @@ namespace ApparelStoreUserPortal.Controllers
         [Route("buy/{id}")]
         public IActionResult Buy(int id)
         {
+            Products P = context.Products.Find(id);
+            if (P.ProductQuantity < 1)
+            {
+               return RedirectToAction("OutOfStock","cart",new { @id=id});
+            }
             if((SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session,"cart")==null))
                 {
                 List<Item> cart = new List<Item>();
@@ -96,7 +109,17 @@ namespace ApparelStoreUserPortal.Controllers
             return RedirectToAction("index");
             
         }
-        private int isExist(int id)
+        [Route("OutOfStock")]
+        public IActionResult OutOfStock(int id)
+        {
+            Products products = context.Products.Where(x => x.ProductId == id).SingleOrDefault();
+            var product = context.Products.Find(id);
+            ViewBag.vendorName = context.Vendors.Find(product.VendorId);
+            ViewBag.CategoryName = context.Categories.Find(product.CategoryId);
+            ViewBag.BrandName = context.Brands.Find(product.BrandId);
+            return View(products);
+        }
+            private int isExist(int id)
         {
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             for(int i=0;i<cart.Count;i++)
@@ -123,67 +146,85 @@ namespace ApparelStoreUserPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(Customers customers)
-        {             
-            var customer = context.Customers.Where(x => x.Email ==customers.Email).SingleOrDefault();
-            customer.CustomerFirstName = customers.CustomerFirstName;
-            customer.CustomerLastName = customers.CustomerLastName;
-            customer.UserName = customers.UserName;
-            customer.Gender = customers.Gender;
-            customer.Email = customers.Email;
-            customer.PhoneNumber = customers.PhoneNumber;
-            customer.Country = customers.Country;
-            customer.State = customers.State;
-            customer.ZipCode = customers.ZipCode;
-            customer.Address = customers.Address;
-            customer.Address2 = customers.Address2;
-            customer.SameAddress = customers.SameAddress;
-            customer.AlternatePhoneNumber = customers.AlternatePhoneNumber;
-            customer.Country2 = customers.Country2;
-            customer.State2 = customers.State2;
-            customer.ZipCode2 = customers.ZipCode2;
+        public IActionResult Checkout([Bind("CustomerFirstName,CustomerLastName,UserName,Gender,Email,PhoneNumber,Country,State,ZipCode,Address,SameAddress")] Customers customers,string stripeEmail, string stripeToken)
+        {
+            if (ModelState.IsValid)
+            {
+                var customer = context.Customers.Where(x => x.Email == customers.Email).SingleOrDefault();
+                customer.CustomerFirstName = customers.CustomerFirstName;
+                customer.CustomerLastName = customers.CustomerLastName;
+                customer.UserName = customers.UserName;
+                customer.Gender = customers.Gender;
+                customer.Email = customers.Email;
+                customer.PhoneNumber = customers.PhoneNumber;
+                customer.Country = customers.Country;
+                customer.State = customers.State;
+                customer.ZipCode = customers.ZipCode;
+                customer.Address = customers.Address;
+                customer.Address2 = customers.Address2;
+                customer.SameAddress = customers.SameAddress;
+                customer.AlternatePhoneNumber = customers.AlternatePhoneNumber;
+                customer.Country2 = customers.Country2;
+                customer.State2 = customers.State2;
+                customer.ZipCode2 = customers.ZipCode2;
 
-            context.SaveChanges();
-            var amount = TempData["total"];
-            Orders orders = new Orders()
-            {
-                OrderAmount = Convert.ToSingle(amount),
-                OrderDate=DateTime.Now,
-              CustomerId=customer.CustomerId
-            };
-            context.Orders.Add(orders);
-            context.SaveChanges();
-            var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
-            List<OrderProducts> orderProducts = new List<OrderProducts>();
-            for(int i=0;i<cart.Count;i++)
-            {
-                OrderProducts orderProduct = new OrderProducts()
+                context.SaveChanges();
+                var amount = TempData["total"];
+                Orders orders = new Orders()
                 {
-                    OrderId=orders.OrderId,
-                    ProductId=cart[i].Products.ProductId,
-                    Quantity=cart[i].ItemQuantity
+                    OrderAmount = Convert.ToSingle(amount),
+                    OrderDate = DateTime.Now,
+                    CustomerId = customer.CustomerId
                 };
-                orderProducts.Add(orderProduct);
+                context.Orders.Add(orders);
+                context.SaveChanges();
+                var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
+                List<OrderProducts> orderProducts = new List<OrderProducts>();
+                for (int i = 0; i < cart.Count; i++)
+                {
+                    OrderProducts orderProduct = new OrderProducts()
+                    {
+                        OrderId = orders.OrderId,
+                        ProductId = cart[i].Products.ProductId,
+                        Quantity = cart[i].ItemQuantity
+                    };
+                    orderProducts.Add(orderProduct);
+                }
+                orderProducts.ForEach(n => context.OrderProducts.Add(n));
+                context.SaveChanges();
+
+                TempData["cust"] = customer.CustomerId;
+                StripeSettings ss = new StripeSettings()
+                {
+                    PublishableKey = stripeEmail,
+                    SecretKey = stripeToken
+                };
+                context.StripeSettings.Add(ss);
+                context.SaveChanges();
+                Payments p1 = new Payments()
+                {
+                    OrderId = orders.OrderId,
+                    Amount = Convert.ToSingle(amount),
+                    PaymentDate = DateTime.Today,
+                    CardDigit = 1111,
+                    StripeSettingsId = ss.StripeSettingsId,
+                    CustomerId = customer.CustomerId,
+                    Description = "sucessfully done"
+                };
+                context.Payments.Add(p1);
+                context.SaveChanges();          
             }
-            orderProducts.ForEach(n => context.OrderProducts.Add(n));
-            context.SaveChanges();
-          
-            TempData["cust"] = customer.CustomerId;
-           return RedirectToAction("index", "payment");
-        
+            return RedirectToAction("status", "cart");
         }
 
         [Route("Status")]
-        public IActionResult Status(string stripeEmail, string stripeToken)
+        public IActionResult Status()
         {
-            int CustId = int.Parse(TempData["cust"].ToString());
+            Customers customers1 = SessionHelper.GetObjectFromJson<Customers>(HttpContext.Session, "cus");
+            int CustId = customers1.CustomerId;
             Customers customers = context.Customers.Where(x => x.CustomerId == CustId).SingleOrDefault();
             ViewBag.Customers = customers;
           
-            //int custId = int.Parse(TempData["cust"].ToString());
-            //Orders ord = context.Orders.Where(x => x.CustomerId == custId).SingleOrDefault();
-            //ViewBag.order = ord;
-
             var cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             ViewBag.cart = cart;
             foreach(var item in cart)
@@ -198,22 +239,6 @@ namespace ApparelStoreUserPortal.Controllers
             cart = null;
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             HttpContext.Session.Remove("cartitem");
-            var customers1 = new CustomerService();
-            var charges = new ChargeService();
-
-            var customer = customers1.Create(new CustomerCreateOptions
-            {
-                Email = stripeEmail,
-                SourceToken = stripeToken
-            });
-
-            var charge = charges.Create(new ChargeCreateOptions
-            {
-                Amount =(long) total,
-                Description = "Sample Charge",
-                Currency = "usd",
-                CustomerId = customer.Id
-            });
 
             return View();
         }
@@ -221,6 +246,11 @@ namespace ApparelStoreUserPortal.Controllers
         [Route("Addbutton/{id}")]
         public IActionResult Addbutton(int id)
         {
+            Products P = context.Products.Find(id);
+            if (P.ProductQuantity < 1)
+            {
+                return RedirectToAction("OutOfStock", "cart", new { @id = id });
+            }
             List<Item> cart = SessionHelper.GetObjectFromJson<List<Item>>(HttpContext.Session, "cart");
             int index = isExist(id);
             if (index != -1)
@@ -258,35 +288,32 @@ namespace ApparelStoreUserPortal.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-
-            if (username != null && password != null)
-            {
-
-                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
-                if (cus != null && password.Equals(cus.Password))
+             if (username != null && password != null)
                 {
 
-                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus);
-                    HttpContext.Session.SetString("cusid", cus.CustomerId.ToString());
-                    HttpContext.Session.SetString("name", cus.CustomerFirstName + " " + cus.CustomerLastName);
+                    var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                    if (cus != null && password.Equals(cus.Password))
+                    {
 
-                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
+                        SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus);
+                        HttpContext.Session.SetString("cusid", cus.CustomerId.ToString());
+                        HttpContext.Session.SetString("name", cus.CustomerFirstName + " " + cus.CustomerLastName);
 
-                    HttpContext.Session.Remove("cartitem");
+                        SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", null);
 
-                    return RedirectToAction("index", "home");
+                        HttpContext.Session.Remove("cartitem");
 
+                        return RedirectToAction("index", "home");
+
+
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Register Email First";
+                        return RedirectToAction("invalid", "home");
+                    }
 
                 }
-                else
-                {
-                    ViewBag.Error = "Register Email First";
-                    return RedirectToAction("invalid", "home");
-                }
-
-
-
-            }
             return RedirectToAction("Index");
 
         }
@@ -315,6 +342,7 @@ namespace ApparelStoreUserPortal.Controllers
                 else
                 {
                     ViewBag.Error = "Register Email First";
+                    return RedirectToAction("invalid", "home");
 
                 }
 
@@ -327,43 +355,45 @@ namespace ApparelStoreUserPortal.Controllers
 
         [Route("register")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Regiter(string username, string password, string firstname, string lastname)
         {
-
-            if (username != null && password != null)
+            if (ModelState.IsValid)
             {
-
-                var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
-                if (cus != null)
+                if (username != null && password != null)
                 {
 
-                    ViewBag.Error = "Alredy register";
+                    var cus = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                    if (cus != null)
+                    {
+
+                        ViewBag.Error = "Alredy register"; 
+                            return RedirectToAction("usedEmail", "home");
+
+                    }
+                    else
+                    {
+                        Customers c = new Customers();
+                        c.Email = username;
+                        c.Password = password;
+
+                        c.CustomerFirstName = firstname;
+                        c.CustomerLastName = lastname;
+                        context.Customers.Add(c);
+                        context.SaveChanges();
+                        Customers cus1 = context.Customers.Where(x => x.Email == username).SingleOrDefault();
+                        SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus1);
+
+                        HttpContext.Session.Remove("cartitem");
+                        HttpContext.Session.SetString("name", c.CustomerFirstName + " " + c.CustomerLastName);
+                        HttpContext.Session.SetString("cusid", cus1.CustomerId.ToString());
 
 
+                        return RedirectToAction("index", "home");
+
+
+                    }
                 }
-                else
-                {
-                    Customers c = new Customers();
-                    c.Email = username;
-                    c.Password = password;
-
-                    c.CustomerFirstName = firstname;
-                    c.CustomerLastName = lastname;
-                    context.Customers.Add(c);
-                    context.SaveChanges();
-                    Customers cus1 = context.Customers.Where(x => x.Email == username).SingleOrDefault();
-                    SessionHelper.SetObjectAsJson(HttpContext.Session, "cus", cus1);
-
-                    HttpContext.Session.Remove("cartitem");
-                    HttpContext.Session.SetString("name", c.CustomerFirstName + " " + c.CustomerLastName);
-                    HttpContext.Session.SetString("cusid", cus1.CustomerId.ToString());
-
-                   
-                    return RedirectToAction("index", "home");
-
-
-                }
-
             }
             return RedirectToAction("Index");
 
@@ -383,7 +413,7 @@ namespace ApparelStoreUserPortal.Controllers
                 {
 
                     ViewBag.Error = "Alredy register";
-
+                    return RedirectToAction("usedEmail", "home");
 
                 }
                 else

@@ -19,15 +19,24 @@
 
     @foreach (var item in ViewBag.cart)
     {
-        <tr>
-            <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Products.ProductId">Remove</a></td>
-            <td>@item.Products.ProductId</td>
-            <td>@item.Products.ProductName</td>
-            <td><img src="@item.Products.ProductImage" width="60" /></td>
-            <td>  @item.Products.ProductPrice </td>
-            <td><a asp-controller="Cart" asp-action="Subratctbutton" asp-route-id="@item.Products.ProductId" class="btn">-</a>  @item.ItemQuantity  <a class="btn" asp-controller="cart" asp-action="Addbutton" asp-route-id="@item.Products.ProductId">+</a></td>
-            <td>@(item.Products.ProductPrice * item.ItemQuantity)</td>
-        </tr>
+    <tr>
+        <td><a asp-controller="cart" asp-action="remove" asp-route-id="@item.Products.ProductId">Remove</a></td>
+        <td>@item.Products.ProductId</td>
+        <td>@item.Products.ProductName</td>
+        <td><img src="@item.Products.ProductImage" width="60" /></td>
+        <td>  @item.Products.ProductPrice </td>
+        @if (ViewBag.j == item.Products.ProductId)
+        {
+            <td><a asp-controller="Cart" asp-action="Subratctbutton" asp-route-id="@item.Products.ProductId" class="btn">-</a>  @item.ItemQuantity  <a onclick="alert('Product is out of stock')">+</a></td>
+
+        }
+        else
+        {
+            <td><a asp-controller="Cart" asp-action="Subratctbutton" asp-route-id="@item.Products.ProductId" class="btn">-</a>  @item.ItemQuantity   <a class="btn" asp-controller="cart" asp-action="Addbutton" asp-route-id="@item.Products.ProductId">+</a></td>
+
+        }
+        <td>@(item.Products.ProductPrice * item.ItemQuantity)</td>
+    </tr>
     }
     <tr>
         <td align="right" colspan="6">Sum</td>
@@ -73,11 +82,13 @@
                             <div class="form-label-group">
                                 <input type="text" name="username" class="form-control" placeholder="Email" required autofocus>
                                 <label for="username" class="sr-only">UserName</label>
+
                             </div>
                             <br />
                             <div class="form-label-group">
                                 <input type="password" name="password" class="form-control" placeholder="password" required>
                                 <label for="password" class="sr-only">Password</label>
+
                             </div>
                             <br />
                             <div class="custom-control custom-checkbox mb-3">
@@ -146,10 +157,12 @@
 </div>
 <div class="text-center">
     @if (ViewBag.i == 0)
-    {<a href="" class="btn btn-success" data-toggle="modal" data-target="#modalLRForm1">CheckOut</a> }
+    {<a asp-controller="home" asp-action="index" class="btn btn-primary">continue Shopping</a>
+        <a href="" class="btn btn-success" data-toggle="modal" data-target="#modalLRForm1">CheckOut</a>
+    }
     else
     {
-     <a asp-controller="home" asp-action="index" class="btn btn-primary">continue Shopping</a>
-      <a class="btn btn-success" asp-action="Checkout" asp-controller="Cart">CheckOut</a>}
+        <a asp-controller="home" asp-action="index" class="btn btn-primary">continue Shopping</a>
+        <a class="btn btn-success" asp-action="Checkout" asp-controller="Cart">CheckOut</a>}
 
 </div>

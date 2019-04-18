@@ -10,8 +10,8 @@ using coreOnlineApparelStoreAdminPortal.Models;
 namespace coreOnlineApparelStoreAdminPortal.Migrations
 {
     [DbContext(typeof(DbContextClass))]
-    [Migration("20190413071609_Initial1")]
-    partial class Initial1
+    [Migration("20190416090608_initial1")]
+    partial class initial1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -72,17 +72,21 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Cart", b =>
                 {
+                    b.Property<int>("CartId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("CustomerId");
 
-                    b.Property<int>("ProductId");
-
                     b.Property<DateTime>("ItemCreated");
+
+                    b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<double>("TotalAmount");
 
-                    b.HasKey("CustomerId", "ProductId");
+                    b.HasKey("CartId");
 
                     b.HasIndex("CustomerId")
                         .IsUnique();
@@ -270,6 +274,21 @@ namespace coreOnlineApparelStoreAdminPortal.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.StripeSettings", b =>
+                {
+                    b.Property<int>("StripeSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PublishableKey");
+
+                    b.Property<string>("SecretKey");
+
+                    b.HasKey("StripeSettingsId");
+
+                    b.ToTable("StripeSettings");
                 });
 
             modelBuilder.Entity("coreOnlineApparelStoreAdminPortal.Models.Vendor", b =>
