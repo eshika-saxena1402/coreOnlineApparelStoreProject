@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_ManagerLayout.cshtml";
 }
 
-<h2>Index</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h2>Index</h2>
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +14,7 @@
                 @Html.DisplayNameFor(model => model.Message)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer)
+                @Html.DisplayNameFor(model => model.CustomerId)
             </th>
             <th></th>
         </tr>
@@ -30,10 +27,10 @@
                     @Html.DisplayFor(modelItem => item.Message)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Customer.CustomerId)
+                    @Html.DisplayFor(modelItem => item.CustomerId)
                 </td>
                 <td>
-                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.FeedBackId">Details</a> 
+                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.FeedBackId">Details</a>
                 </td>
             </tr>
         }

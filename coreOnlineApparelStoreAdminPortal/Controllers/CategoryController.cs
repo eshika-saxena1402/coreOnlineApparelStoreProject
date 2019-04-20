@@ -26,7 +26,7 @@ namespace coreOnlineApparelStoreAdminPortal.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create([Bind("CategoryName")]Category C)
+        public ActionResult Create([Bind("CategoryName","CategoryDescription")]Category C)
         {
             if(ModelState.IsValid)
             {

@@ -25,7 +25,7 @@ namespace coreOnlineApparelStoreAdminPortal.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create([Bind("BrandName")]Brand B)
+        public ActionResult Create([Bind("BrandName","BrandDescription")]Brand B)
         {
             if (ModelState.IsValid)
             {

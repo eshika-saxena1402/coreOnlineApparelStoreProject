@@ -11,6 +11,7 @@ namespace coreOnlineApparelStoreAdminPortal.Models
             public int CategoryId { get; set; }
             [Required]
             public string CategoryName { get; set; }
+             [Required]
             public string CategoryDescription { get; set; }
             public List<Product> Products { get; set; }
 

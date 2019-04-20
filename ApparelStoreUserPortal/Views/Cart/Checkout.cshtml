@@ -249,6 +249,7 @@
                 <div class="mb-3">
                     <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
                     <input type="text" class="form-control" id="Address2" placeholder="Secondary Address" value="@ViewBag.Customers.Address2" asp-for="Address2">
+                    <span asp-validation-for="Address2" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="PhoneNumber">Alternate Phone Number <span class="text-muted"></span></label>
@@ -271,7 +272,7 @@
                             <option>China</option>
                             <option>Africa</option>
                         </select>
-
+                        <span asp-validation-for="Country2" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Please select a valid country.
                         </div>
@@ -290,6 +291,7 @@
                             <option>Andra Pradesh</option>
                             <option>Kerala</option>
                         </select>
+                        <span asp-validation-for="State2" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Please provide a valid state.
                         </div>
@@ -297,6 +299,7 @@
                     <div class="md-5 mb-3 ">
                         <label for="zip">Zip</label>
                         <input type="text" class="form-control" id="permanent_pincode" placeholder="" value="@ViewBag.Customers.ZipCode2" required asp-for="ZipCode2">
+                        <span asp-validation-for="ZipCode2" class="text-danger"></span>
                         <div class="invalid-feedback">
                             Zip code required.
                         </div>

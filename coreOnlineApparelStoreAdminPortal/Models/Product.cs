@@ -13,17 +13,20 @@ namespace coreOnlineApparelStoreAdminPortal.Models
         public string ProductName { get; set; }
         [Required]
         public float ProductPrice { get; set; }
-       
+        [Required]
         public string ProductImage { get; set; }
         [Required]
         public int ProductQuantity { get; set; }
         [Required]
         public string ProductSize { get; set; }
         public string ProductDescription { get; set; }
+        [Required]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        [Required]
         public int VendorId { get; set; }
         public Vendor Vendor { get; set; }
+        [Required]
         public int BrandId { get; set; }
         public Brand Brand{ get; set; }  
         public List<OrderProduct>OrderProducts { get; set; }

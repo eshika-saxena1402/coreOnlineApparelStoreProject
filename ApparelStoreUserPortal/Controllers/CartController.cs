@@ -146,10 +146,9 @@ namespace ApparelStoreUserPortal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout([Bind("CustomerFirstName,CustomerLastName,UserName,Gender,Email,PhoneNumber,Country,State,ZipCode,Address,SameAddress")] Customers customers,string stripeEmail, string stripeToken)
+        public IActionResult Checkout([Bind("CustomerFirstName,CustomerLastName,UserName,Gender,Email,PhoneNumber,Country,State,ZipCode,Address,SameAddress","Address2","Country2","State2","ZipCode2","AlternatePhoneNumber")] Customers customers,string stripeEmail, string stripeToken)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var customer = context.Customers.Where(x => x.Email == customers.Email).SingleOrDefault();
                 customer.CustomerFirstName = customers.CustomerFirstName;
                 customer.CustomerLastName = customers.CustomerLastName;
@@ -161,8 +160,8 @@ namespace ApparelStoreUserPortal.Controllers
                 customer.State = customers.State;
                 customer.ZipCode = customers.ZipCode;
                 customer.Address = customers.Address;
-                customer.Address2 = customers.Address2;
                 customer.SameAddress = customers.SameAddress;
+                customer.Address2 = customers.Address2;
                 customer.AlternatePhoneNumber = customers.AlternatePhoneNumber;
                 customer.Country2 = customers.Country2;
                 customer.State2 = customers.State2;
@@ -213,7 +212,7 @@ namespace ApparelStoreUserPortal.Controllers
                 };
                 context.Payments.Add(p1);
                 context.SaveChanges();          
-            }
+           
             return RedirectToAction("status", "cart");
         }
 

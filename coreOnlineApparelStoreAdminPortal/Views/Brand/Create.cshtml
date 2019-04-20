@@ -22,6 +22,7 @@
             <div class="form-group">
                 <label for="BrandDescription">BrandDescription</label>
                 <input type="text" class="form-control" placeholder="Description" asp-for="BrandDescription">
+                <span asp-validation-for="BrandDescription" class="text-danger"></span>
             </div>
 
             <button type="submit" class="btn btn-primary">Create</button>

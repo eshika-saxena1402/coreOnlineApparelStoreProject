@@ -29,7 +29,8 @@ namespace CoreApparelManagerPortal.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create([Bind("ProductName", "ProductPrice", "ProductQuantity", "ProductSize")]Products c)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind("ProductName", "ProductPrice", "ProductImage", "ProductQuantity", "ProductSize", "ProductDescription", "CategoryId", "VendorId", "BrandId")]Products c)
         {
             if (ModelState.IsValid)
             {
